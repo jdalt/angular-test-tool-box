@@ -1,4 +1,4 @@
-angular.module('testUtil')
+angular.module('jdalt.toolBox')
 .factory('RequestHelper', function(
   $httpBackend
 ) {

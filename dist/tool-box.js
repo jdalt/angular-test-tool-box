@@ -1,8 +1,8 @@
 'use strict';
 
-angular.module('testUtil', [])
+angular.module('jdalt.toolBox', [])
 
-angular.module('testUtil')
+angular.module('jdalt.toolBox')
 .factory('DirectiveHelper', ["$compile", "$rootScope", "$httpBackend", "DomHelper", function(
   $compile,
   $rootScope,
@@ -13,8 +13,12 @@ angular.module('testUtil')
   function compileFn(tmpl, flushRequests) {
 
     return function compile(scopeParams) {
+      scopeParams = scopeParams || {}
       var scope = $rootScope.$new()
-      _.defaults(scope, scopeParams)
+
+      Object.keys(scopeParams).forEach(function(key) {
+        scope[key] = scopeParams[key]
+      })
 
       var el = $compile(tmpl)(scope)
       scope.$digest()
@@ -32,7 +36,7 @@ angular.module('testUtil')
 
 }])
 
-angular.module('testUtil')
+angular.module('jdalt.toolBox')
 .factory('DomHelper', function(
 ) {
 
@@ -40,7 +44,13 @@ angular.module('testUtil')
     return {
       el: root,
       clickButton: function(el) {
-        root.find(el).click()
+        var clickEl = root.find(el)
+
+        if(!clickEl.length) {
+          throw new Error('Element "'+ el +'" not found to click')
+        }
+
+        clickEl.click()
       },
       findText: function(el) {
         return root.find(el).text()
@@ -50,7 +60,7 @@ angular.module('testUtil')
 
 })
 
-angular.module('testUtil')
+angular.module('jdalt.toolBox')
 .factory('RequestHelper', ["$httpBackend", function(
   $httpBackend
 ) {
