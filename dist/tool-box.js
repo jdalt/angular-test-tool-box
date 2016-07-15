@@ -3,7 +3,7 @@
 angular.module('testUtil', [])
 
 angular.module('testUtil')
-.factory('DirectiveHelper', function(
+.factory('DirectiveHelper', ["$compile", "$rootScope", "$httpBackend", "DomHelper", function(
   $compile,
   $rootScope,
   $httpBackend,
@@ -30,7 +30,7 @@ angular.module('testUtil')
     compileFn: compileFn
   }
 
-})
+}])
 
 angular.module('testUtil')
 .factory('DomHelper', function(
@@ -51,7 +51,7 @@ angular.module('testUtil')
 })
 
 angular.module('testUtil')
-.factory('RequestHelper', function(
+.factory('RequestHelper', ["$httpBackend", function(
   $httpBackend
 ) {
 
@@ -67,4 +67,4 @@ angular.module('testUtil')
     }
   }
 
-})
+}])
