@@ -4,13 +4,19 @@
   "description": "A toolbox of useful providers for testing component based angular applications.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "./node_modules/karma/bin/karma start"
   },
   "author": "Jacob Dalton",
   "license": "ISC",
   "devDependencies": {
     "gulp": "^3.9.1",
     "gulp-concat": "^2.6.0",
-    "gulp-ng-annotate": "^2.0.0"
+    "gulp-ng-annotate": "^2.0.0",
+    "gulp-watch": "^4.3.8",
+    "jasmine-core": "^2.4.1",
+    "karma": "^1.1.1",
+    "karma-coverage": "^1.1.0",
+    "karma-jasmine": "^1.0.2",
+    "karma-phantomjs-launcher": "^1.0.1"
   }
 }

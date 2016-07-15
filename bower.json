@@ -1,0 +1,27 @@
+{
+  "name": "tool-box",
+  "description": "A toolbox of useful providers for testing component based angular applications.",
+  "main": "dist/tool-box.js",
+  "authors": [
+    "Jacob Dalton"
+  ],
+  "license": "ISC",
+  "keywords": [
+    "angular",
+    "testing",
+    "toolbox"
+  ],
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "devDependencies": {
+    "angular": "^1.5.7",
+    "angular-mocks": "^1.5.7",
+    "jquery": "^3.1.0"
+  }
+}
