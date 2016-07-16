@@ -1,19 +1,29 @@
-describe('DomHelper', function() {
+describe('Fabricator', function() {
 
   var Fab
 
   beforeEach(module('jdalt.toolBox', function (FabricatorProvider) {
 
     FabricatorProvider
-      .fab('dog', {
-        id: 1,
-        name: 'Woofie',
-        breed: 'Snozer'
-      })
       .fab('cat', {
         id: 1,
         name: 'Snarl',
-        pelt: 'Orange'
+        pelt: 'Orange',
+        claws: false,
+      })
+      .fab('junk-lion', {
+        $parent: 'junk-cat',
+        name: 'Junk Lion'
+      })
+      .fab('lion', {
+        $parent: 'cat',
+        name: 'King',
+        claws: true,
+      })
+      .fab('simba', {
+        $parent: 'lion',
+        name: 'Simba',
+        pelt: 'royal',
       })
 
   }))
@@ -21,6 +31,10 @@ describe('DomHelper', function() {
   beforeEach(inject(function(Fabricator) {
     Fab = Fabricator
   }))
+
+  it('should throw an exception if fabricator definition is not found', function() {
+    expect(function() { Fab('junk') }).toThrow(new Error('No fabricator definition for junk'))
+  })
 
   it('should return a simple Fabricated object', function() {
     var cat = Fab('cat')
@@ -43,5 +57,25 @@ describe('DomHelper', function() {
     expect(newCoolCat.name).toBe('Snarl')
   })
 
-})
+  it('should throw an exception when parent cannnot be found', function() {
+    expect(function() { Fab('junk-lion') }).toThrow(new Error('Parent fabricator junk-cat not found for junk-lion'))
+  })
 
+  it('should allow fabricators to inherit from one parent', function() {
+    var lion = Fab('lion')
+
+    expect(lion.name).toBe('King')
+    expect(lion.id).toBe(1)
+    expect(lion.claws).toBe(true)
+  })
+
+  it('should allow fabricators to inherit from a chain of parents', function() {
+    var simba = Fab('simba')
+
+    expect(simba.name).toBe('Simba')
+    expect(simba.id).toBe(1)
+    expect(simba.claws).toBe(true)
+    expect(simba.pelt).toBe('royal')
+  })
+
+})
