@@ -17,7 +17,6 @@ module.exports = function(config) {
     frameworks: ['jasmine'],
 
     files: [
-      'bower_components/underscore/underscore.js', // for basic operations, expect module users to provide this on their own
       'bower_components/jquery/dist/jquery.js', // jquery makes dom querying easier in tests, it's expected that it will be used with this module for testing
       'bower_components/angular/angular.js',
       'bower_components/angular-mocks/angular-mocks.js',

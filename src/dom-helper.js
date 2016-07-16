@@ -2,7 +2,7 @@ angular.module('jdalt.toolBox')
 .factory('DomHelper', function(
 ) {
 
-  return function(root) {
+  function DomHelper(root) {
     return {
       el: root,
       clickButton: function(el) {
@@ -16,8 +16,14 @@ angular.module('jdalt.toolBox')
       },
       findText: function(el) {
         return root.find(el).text()
+      },
+      find: function(selector) { //TODO: test
+        return DomHelper(root.find(selector))
       }
     }
+
   }
+
+  return DomHelper
 
 })

@@ -3,12 +3,11 @@
 angular.module('jdalt.toolBox', [])
 
 angular.module('jdalt.toolBox')
-.factory('DirectiveHelper', ["$compile", "$rootScope", "$httpBackend", "DomHelper", "_", function(
+.factory('DirectiveHelper', ["$compile", "$rootScope", "$httpBackend", "DomHelper", function(
   $compile,
   $rootScope,
   $httpBackend,
-  DomHelper,
-  _
+  DomHelper
 ) {
 
   function compileFn(tmpl, flushRequests) {
@@ -17,14 +16,14 @@ angular.module('jdalt.toolBox')
       scopeParams = scopeParams || {}
       var scope = $rootScope.$new()
 
-      _.extend(scope, scopeParams)
+      angular.extend(scope, scopeParams)
 
       var el = $compile(tmpl)(scope)
       scope.$digest()
 
       if(flushRequests || flushRequests === undefined) $httpBackend.flush()
 
-      return _.extend({ scope: scope }, DomHelper(el))
+      return angular.extend({ scope: scope }, DomHelper(el))
     }
 
   }
@@ -39,7 +38,7 @@ angular.module('jdalt.toolBox')
 .factory('DomHelper', function(
 ) {
 
-  return function(root) {
+  function DomHelper(root) {
     return {
       el: root,
       clickButton: function(el) {
@@ -53,9 +52,15 @@ angular.module('jdalt.toolBox')
       },
       findText: function(el) {
         return root.find(el).text()
+      },
+      find: function(selector) { //TODO: test
+        return DomHelper(root.find(selector))
       }
     }
+
   }
+
+  return DomHelper
 
 })
 
@@ -76,11 +81,4 @@ angular.module('jdalt.toolBox')
     }
   }
 
-}])
-
-angular.module('jdalt.toolBox')
-.factory('_', ["$window", function(
-  $window
-) {
-  return $window._
 }])
