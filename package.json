@@ -4,7 +4,8 @@
   "description": "A toolbox of useful providers for testing component based angular applications.",
   "main": "index.js",
   "scripts": {
-    "test": "./node_modules/karma/bin/karma start"
+    "test": "./node_modules/karma/bin/karma start",
+    "testCi": "./node_modules/karma/bin/karma start --single-run --reporters dots,coverage"
   },
   "author": "Jacob Dalton",
   "license": "ISC",
