@@ -1,6 +1,6 @@
 'use strict'
 
-angular.module('jdalt.toolBox')
+angular.module('dummy')
 .directive('bidirectionalDirective', function() {
   return {
     restrict: 'A',

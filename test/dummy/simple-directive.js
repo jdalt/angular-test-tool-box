@@ -1,6 +1,6 @@
 'use strict'
 
-angular.module('jdalt.toolBox')
+angular.module('dummy')
 .directive('simpleDirective', function() {
   return {
     restrict: 'A',
