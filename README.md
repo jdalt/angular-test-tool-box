@@ -1,7 +1,7 @@
 Angular Test Tool Box
 =====================
 
-[![Build Status](https://travis-ci.org/jdalt/angular-test-tool-box.svg?branch=master)](https://travis-ci.org/jdalt/angular-test-tool-box.svg?branch=master)
+[![Build Status](https://travis-ci.org/jdalt/angular-test-tool-box.svg?branch=master)](https://travis-ci.org/jdalt/angular-test-tool-box)
 
 Angular test helpers injected as an angular module.
 
