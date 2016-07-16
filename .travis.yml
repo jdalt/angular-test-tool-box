@@ -1,7 +1,18 @@
 language: node_js
 
+sudo: false
+branches:
+  only:
+    - master
+
+cache:
+  directories:
+    - node_modules
+    - bower_components
+
 before_script:
   - make install
 
 script:
   - npm run-script testCi
+  - uptime && vmstat -S M
