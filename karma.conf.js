@@ -11,7 +11,7 @@ module.exports = function(config) {
   config.set({
 
     preprocessors: {
-      'dist/tool-box.js': ['coverage']
+      'src/*.js': ['coverage']
     },
 
     frameworks: ['jasmine'],
@@ -21,7 +21,8 @@ module.exports = function(config) {
       'bower_components/angular/angular.js',
       'bower_components/angular-mocks/angular-mocks.js',
 
-      'dist/tool-box.js',
+      'src/*.js',
+      'vendor/*.js',
       'test/dummy/*.js',
       'test/*-test.js',
       'karma.start.js'

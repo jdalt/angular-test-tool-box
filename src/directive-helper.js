@@ -3,7 +3,8 @@ angular.module('jdalt.toolBox')
   $compile,
   $rootScope,
   $httpBackend,
-  DomHelper
+  DomHelper,
+  _
 ) {
 
   function compileFn(tmpl, flushRequests) {
@@ -12,16 +13,14 @@ angular.module('jdalt.toolBox')
       scopeParams = scopeParams || {}
       var scope = $rootScope.$new()
 
-      Object.keys(scopeParams).forEach(function(key) {
-        scope[key] = scopeParams[key]
-      })
+      _.extend(scope, scopeParams)
 
       var el = $compile(tmpl)(scope)
       scope.$digest()
 
       if(flushRequests || flushRequests === undefined) $httpBackend.flush()
 
-      return DomHelper(el)
+      return _.extend({ scope: scope }, DomHelper(el))
     }
 
   }
