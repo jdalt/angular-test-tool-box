@@ -6,14 +6,14 @@ var watch = require('gulp-watch')
 
 gulp.task('build', build)
 gulp.task('watch', function() {
-  watch(['./src/*-helper.js'], function(file) {
+  watch(['./src/*.js'], function(file) {
     console.log('File changed:', file.path)
     build()
   })
 })
 
 function build() {
-  return gulp.src(['./src/_module.js','./src/*-helper.js'])
+  return gulp.src(['./src/_module.js','./src/*.js'])
     .pipe(concat('tool-box.js'))
     .pipe(ngAnnotate())
     .pipe(gulp.dest('./dist/'))
