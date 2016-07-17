@@ -20,9 +20,22 @@ describe('JsData Request', function() {
       Req.flush()
       expect(dom.findText('#litter-box')).toBe('Meowth')
     })
+
+    it('should request monkey and display monkey names <li>', function() {
+      Req.expectMany('/api/bed/monkeys', { bunch: 10 }, { result: [{ id: 1, name: 'Monkey 1' }, { id: 2, name: 'Monkey 2'}] })
+      dom.clickButton('#monkey-button')
+      Req.flush()
+
+      expect(dom.findText('ul li')).toContain('Monkey 1')
+      expect(dom.findText('ul li')).toContain('Monkey 2')
+    })
   })
 
   describe('resource definition expectations', function() {
+    it('should compile with expectation of "cat"', function() {
+      expect(function() { Req.expectOne('junk', 1) }).toThrow(new Error('Unable to find path for resource junk'))
+    })
+
     it('should compile with expectation of "cat"', function() {
       Req.expectOne('cat', 1, { result: { id: 1, name: 'Roger' } })
       dom.clickButton('#catnip')
@@ -36,7 +49,7 @@ describe('JsData Request', function() {
       expect(dom.findText('#litter-box')).toBe('Meowth')
     })
 
-    it('should request cat and display cat name in #litter-box', function() {
+    it('should request monkey and display monkey names <li>', function() {
       Req.expectMany('monkey', { bunch: 10 }, { result: [{ id: 1, name: 'Monkey 1' }, { id: 2, name: 'Monkey 2'}] })
       dom.clickButton('#monkey-button')
       Req.flush()
