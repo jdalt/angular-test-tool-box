@@ -1,3 +1,5 @@
 'use strict';
 
-angular.module('dummy', [])
+angular.module('dummy', [
+  'js-data',
+])

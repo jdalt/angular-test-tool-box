@@ -20,6 +20,8 @@ module.exports = function(config) {
       'bower_components/jquery/dist/jquery.js', // jquery makes dom querying easier in tests, it's expected that it will be used with this module for testing
       'bower_components/angular/angular.js',
       'bower_components/angular-mocks/angular-mocks.js',
+      'bower_components/js-data/dist/js-data.js',
+      'bower_components/js-data-angular/dist/js-data-angular.js',
 
       'src/*.js',
       'wrapper/*.js',
