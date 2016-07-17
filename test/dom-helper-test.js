@@ -16,17 +16,22 @@ describe('DomHelper', function() {
     })
 
     it('should click "simp-button" and cause "Something Happened!" result', function() {
-      dom.clickButton('#simp-button')
+      dom.click('#simp-button')
+      expect(dom.findText('p')).toBe('Something Happened!')
+    })
+
+    it('should proxy elment click" result', function() {
+      dom.find('#simp-button').click()
       expect(dom.findText('p')).toBe('Something Happened!')
     })
 
     it('should return DomHelper in context of clicked element', function() {
-      var buttonDom = dom.clickButton('#simp-button')
+      var buttonDom = dom.click('#simp-button')
       expect(buttonDom.element.tagName).toBe('BUTTON')
     })
 
-    it('should throw an error when clickButton element cannot be found', function() {
-      expect(function() { dom.clickButton('#junk') }).toThrow(new Error('Element "#junk" not found to click'))
+    it('should throw an error when click(selector) unable to find selector element', function() {
+      expect(function() { dom.click('#junk') }).toThrow(new Error('Element "#junk" not found to click'))
     })
   })
 

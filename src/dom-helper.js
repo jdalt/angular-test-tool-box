@@ -15,31 +15,34 @@ angular.module('jdalt.toolBox')
         console.log('element', this.element)
       },
 
-      clickButton: function(selector) {
-        var clickEl = root.find(selector)
+      click: function(selector) {
+        if(!selector) { // proxy click on root
+          root.click()
+          return this
+        }
 
+        var clickEl = root.find(selector)
         if(!clickEl.length) {
           throw new Error('Element "'+ selector +'" not found to click')
         }
-
         clickEl.click()
 
-        return DomHelper(clickEl) // TODO test chain
+        return DomHelper(clickEl)
       },
 
       findText: function(selector) {
         return root.find(selector).text()
       },
 
-      findNthText: function(selector, nth) { // TODO: test
+      findNthText: function(selector, nth) {
         return root.find(selector).eq(nth).text()
       },
 
-      find: function(selector) { //TODO: test
+      find: function(selector) {
         return DomHelper(root.find(selector))
       },
 
-      text: function() { //TODO: test
+      text: function() {
         return root.text()
       }
 
