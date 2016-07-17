@@ -34,21 +34,21 @@ describe('Fabricator', function() {
 
   it('should expectCreate /api/rocket when #launch-pad clicked', function() {
     dom = compile()
-    Req.expectCreate('/api/rocket', { action: 'Create' }) // TODO expect on payload
+    Req.expectCreate('/api/rocket', { action: 'Create' })
     dom.clickButton('#launch-pad')
     Req.flush()
   })
 
   it('should expectUpdate /api/rocket/1 when #deep-orbit clicked', function() {
     dom = compile()
-    Req.expectUpdate('/api/rocket', 1, { action: 'Update' }) // TODO expect on payload
+    Req.expectUpdate('/api/rocket', 1, { action: 'Update' })
     dom.clickButton('#deep-orbit')
     Req.flush()
   })
 
   it('should expectUpsert /api/rocket/1 when #low-orbit clicked', function() {
     dom = compile()
-    Req.expectUpsert('/api/rocket', 1, { action: 'Upsert' }) // TODO expect on payload
+    Req.expectUpsert('/api/rocket', 1, { action: 'Upsert' })
     dom.clickButton('#low-orbit')
     Req.flush()
   })
