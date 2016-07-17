@@ -68,6 +68,12 @@ describe('DomHelper', function() {
       dom.setInputValue('#deep-thought-inp', 'Fun Fun Fun')
       expect(dom.findText('#deep-thought-val')).toBe('Fun Fun Fun')
     })
+
+    it('should set input val() on input#deep-thought-inp', function() {
+      expect(dom.findText('#deep-thought-val')).toBe('42')
+      dom.find('#deep-thought-inp').val('Fun Fun Fun')
+      expect(dom.findText('#deep-thought-val')).toBe('Fun Fun Fun')
+    })
   })
 
 })

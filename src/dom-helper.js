@@ -50,6 +50,11 @@ angular.module('jdalt.toolBox')
         return DomHelper(inputEl)
       },
 
+      val: function(value) {
+        root.val(value).trigger('change')
+        return this
+      },
+
       findText: function(selector) {
         return root.find(selector).text()
       },
