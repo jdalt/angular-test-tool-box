@@ -134,14 +134,36 @@ angular.module('jdalt.toolBox')
 
   return {
     flush: $httpBackend.flush,
-    expectMany: function(path, params, result) {
+
+    expectMany: function(path, params, res) {
       var url = path + queryString(params)
-      $httpBackend.expectGET(url).respond(200, result)
+      $httpBackend.expectGET(url).respond(200, res)
     },
-    expectOne: function(path, id, result) {
+
+    expectOne: function(path, id, res) {
       var url = path + '/' + id
-      $httpBackend.expectGET(url).respond(200, result)
-    }
+      $httpBackend.expectGET(url).respond(200, res)
+    },
+
+    expectCreate: function(path, req, res) {
+      var url = path
+      $httpBackend.expectPOST(url, req).respond(200, res)
+    },
+
+    expectUpdate: function(path, id, req, res) {
+      var url = path + '/' + id
+      $httpBackend.expectPUT(url, req).respond(200, res)
+    },
+
+    expectUpsert: function(path, id, req, res) {
+      var url = path + '/' + id
+      $httpBackend.expectPATCH(url, req).respond(200, res)
+    },
+
+    expectDelete: function(path, id) {
+      var url = path + '/' + id
+      $httpBackend.expectDELETE(url).respond(204)
+    },
   }
 
 }])
