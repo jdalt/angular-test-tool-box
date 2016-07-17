@@ -37,7 +37,7 @@ angular.module('dummy')
                 '<div id="litter-box">{{ ctrl.catResult.name }}</div>' +
                 '<button id="monkey-button" ng-click="ctrl.getMonkeys()"><button>' +
                 '<ul>' +
-                  '<li ng-repeat="monkey in ctrl.monkeyBunch">{{ monkey.name }}</li>' +
+                  '<li ng-repeat="monkey in ctrl.monkeyBunch">name: {{ monkey.name }} bananas: {{ monkey.bananas }}</li>' +
                 '</ul>' +
               '</div>',
     controllerAs: 'ctrl',

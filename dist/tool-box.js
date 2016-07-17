@@ -116,9 +116,10 @@ angular.module('jdalt.toolBox')
 })
 
 angular.module('jdalt.toolBox')
-.factory('RequestHelper', ["$httpBackend", "$httpParamSerializer", "DSHttpAdapter", "DS", function(
+.factory('RequestHelper', ["$httpBackend", "$httpParamSerializer", "Fabricator", "DSHttpAdapter", "DS", function(
   $httpBackend,
   $httpParamSerializer,
+  Fabricator,
   DSHttpAdapter, // TODO: configure with provider
   DS // TODO: configure with provider
 ) {
@@ -136,6 +137,37 @@ angular.module('jdalt.toolBox')
     return basePath + getEndpoint(resourceName)
   }
 
+  function responseTransformer(data) {
+    return { result: data }
+  }
+
+  function defaultResponseTransformer(data) {
+    return data
+  }
+
+  function fabricated(def, props) {
+    if(isPath(def)) return props
+    var fabObj = Fabricator(def, props)
+    return responseTransformer(fabObj)
+  }
+
+  function manyFabricated(def, props) {
+    if(isPath(def)) return props
+
+    var fabObjs = []
+    props.forEach(function(propObj) {
+      fabObjs.push(Fabricator(def, propObj))
+    })
+
+    return responseTransformer(fabObjs)
+  }
+
+  function checkArray(def, props) {
+    if(!isPath(def) && !angular.isArray(props)) {
+      throw new Error('Response must be an array') // possible to override for custom envelope?
+    }
+  }
+
   // general request handling
   function queryString(params) {
     var qs = ''
@@ -148,8 +180,12 @@ angular.module('jdalt.toolBox')
     return qs
   }
 
+  function isPath(def) {
+    return def[0] == '/'
+  }
+
   function fullPath(def) {
-    if(def[0] == '/') return def // it's a path
+    if(isPath(def)) return def
 
     return resourcePath(def)
   }
@@ -166,13 +202,14 @@ angular.module('jdalt.toolBox')
     flush: $httpBackend.flush,
 
     expectMany: function(def, params, res) {
+      checkArray(def, res)
       var url = getUrlMany(def, params)
-      $httpBackend.expectGET(url).respond(200, res)
+      $httpBackend.expectGET(url).respond(200, manyFabricated(def, res))
     },
 
     expectOne: function(def, id, res) {
       var url = getUrlOne(def, id)
-      $httpBackend.expectGET(url).respond(200, res)
+      $httpBackend.expectGET(url).respond(200, fabricated(def,res))
     },
 
     expectCreate: function(def, req, res) {
