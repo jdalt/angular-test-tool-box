@@ -31,7 +31,7 @@ angular.module('dummy')
 .directive('jsDataDirective', function() {
   return {
     restrict: 'A',
-    scope: true,
+    scope: {},
     template: '<div>' +
                 '<div id="litter-box">{{ ctrl.catResult.name }}</div>' +
                 '<button id="monkey-button" ng-click="ctrl.getMonkeys()"><button>' +
@@ -40,7 +40,9 @@ angular.module('dummy')
                 '</ul>' +
               '</div>',
     controllerAs: 'ctrl',
-    controller: function(DS) {
+    controller: function(
+      DS
+    ) {
 
       var vm = this
 

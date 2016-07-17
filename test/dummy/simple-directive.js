@@ -4,7 +4,7 @@ angular.module('dummy')
 .directive('simpleDirective', function() {
   return {
     restrict: 'A',
-    scope: true,
+    scope: {},
     template: '<div id="simp-main">' +
               '  <h1>Simple Directive H1</h1>' +
               '  <div id="simp-sub">' +
