@@ -13,8 +13,8 @@ describe('DirectiveHelper', function() {
 
     it('should return el with correct text after compile', function() {
       dom = compile()
-      expect(dom.el.find('h1').text()).toEqual('Simple Directive H1')
-      expect(dom.el.find('#simp-button').text()).toEqual('Do A Thing')
+      expect(dom.$el.find('h1').text()).toEqual('Simple Directive H1')
+      expect(dom.$el.find('#simp-button').text()).toEqual('Do A Thing')
     })
   })
 
@@ -29,7 +29,7 @@ describe('DirectiveHelper', function() {
 
     it('should return el with correct text after compile', function() {
       dom = compile({ twoWay: 'Velvet Goldmine' })
-      expect(dom.el.find('#main').text()).toEqual('Velvet Goldmine')
+      expect(dom.$el.find('#main').text()).toEqual('Velvet Goldmine')
     })
 
     it('should return dom with scope after compile', function() {
@@ -43,7 +43,7 @@ describe('DirectiveHelper', function() {
       dom.scope.twoWay = 'Bowie'
       dom.scope.$digest()
 
-      expect(dom.el.find('#main').text()).toEqual('Bowie')
+      expect(dom.$el.find('#main').text()).toEqual('Bowie')
     })
   })
 
