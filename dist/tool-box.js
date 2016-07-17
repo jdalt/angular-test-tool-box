@@ -116,19 +116,31 @@ angular.module('jdalt.toolBox')
 })
 
 angular.module('jdalt.toolBox')
-.factory('RequestHelper', ["$httpBackend", function(
-  $httpBackend
+.factory('RequestHelper', ["$httpBackend", "$httpParamSerializer", function(
+  $httpBackend,
+  $httpParamSerializer
 ) {
 
+  function queryString(params) {
+    var qs = ''
+
+    if(params) {
+      qs = $httpParamSerializer(params)
+      if(qs != '') qs = '?' + qs
+    }
+
+    return qs
+  }
+
   return {
-    expectGet: function(path, result, params) {
-      // var path = getPath(resourceName)
-      // result needs to multiplex envelope, for DirectSports vs Sport Admin
-      // dumbness
-      $httpBackend.expectGET(path).respond(200, result) // consider need to format to result packet
+    flush: $httpBackend.flush,
+    expectAll: function(path, result, params) {
+      var url = path + queryString(params)
+      $httpBackend.expectGET(url).respond(200, result)
     },
-    whenGet: function(params) {
-      $httpBackend.whenGET(path).respond(200, result) // consider need to format to result packet
+    expectOne: function(path, id, result) {
+      var url = path + '/' + id
+      $httpBackend.expectGET(url).respond(200, result)
     }
   }
 
