@@ -134,7 +134,7 @@ angular.module('jdalt.toolBox')
 
   return {
     flush: $httpBackend.flush,
-    expectAll: function(path, result, params) {
+    expectMany: function(path, params, result) {
       var url = path + queryString(params)
       $httpBackend.expectGET(url).respond(200, result)
     },

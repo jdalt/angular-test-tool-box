@@ -12,3 +12,8 @@ beforeEach(module('dummy', function (DSHttpAdapterProvider) {
     error: false,
   })
 }))
+
+afterEach(inject(function($httpBackend) {
+  $httpBackend.verifyNoOutstandingExpectation()
+  $httpBackend.verifyNoOutstandingRequest()
+}))
