@@ -58,6 +58,16 @@ describe('DomHelper', function() {
       expect(dom.findNthText('#thinger-list li', 1)).toBe('Thing 2')
       expect(dom.findNthText('#thinger-list li', 2)).toBe('Thing 3')
     })
+
+    it('should throw exception when setInputValue selector is not found', function() {
+      expect(function() { dom.setInputValue('#blah') }).toThrow(new Error('Element "#blah" not found to setInputValue'))
+    })
+
+    it('should setInputValue on input#deep-thought-inp', function() {
+      expect(dom.findText('#deep-thought-val')).toBe('42')
+      dom.setInputValue('#deep-thought-inp', 'Fun Fun Fun')
+      expect(dom.findText('#deep-thought-val')).toBe('Fun Fun Fun')
+    })
   })
 
 })

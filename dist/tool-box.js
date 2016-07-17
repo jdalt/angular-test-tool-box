@@ -76,6 +76,16 @@ angular.module('jdalt.toolBox')
         return DomHelper(buttonEl)
       },
 
+      setInputValue: function(selector, inputVal) {
+        var inputEl = root.find(selector)
+        if(!inputEl.length) {
+          throw new Error('Element "'+ selector +'" not found to setInputValue')
+        }
+
+        inputEl.val(inputVal).trigger('change')
+        return DomHelper(inputEl)
+      },
+
       findText: function(selector) {
         return root.find(selector).text()
       },

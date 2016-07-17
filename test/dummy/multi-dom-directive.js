@@ -14,11 +14,14 @@ angular.module('dummy')
               '    <li>Thing 2</li>\n' +
               '    <li>Thing 3</li>\n' +
               '  </ul>\n' +
+              '  <input id="deep-thought-inp" type="text" ng-model="ctrl.allThought" />\n' +
+              '  <div id="deep-thought-val">{{ ctrl.allThought }}</div>\n' +
               '</div>\n',
     controllerAs: 'ctrl',
     controller: function() {
 
       var vm = this
+      vm.allThought = '42'
 
     }
   }
