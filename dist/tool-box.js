@@ -88,11 +88,11 @@ angular.module('jdalt.toolBox')
           throw new Error('No fabricator definition for ' + name)
         }
 
-        // Iteratively extend up chain of ancestors
+        // Iteratively merge up chain of ancestors
         if(fabDef.$parent) {
           var current, previous, result
           previous = fabDef
-          result = angular.extend({}, fabDef)
+          result = angular.merge({}, fabDef)
           while(previous.$parent) {
             current = fabDefinitions[previous.$parent]
 
@@ -100,13 +100,13 @@ angular.module('jdalt.toolBox')
               throw new Error('Parent fabricator ' + previous.$parent + ' not found for ' + name)
             }
 
-            result = angular.extend({}, current, result) // use object literal {} to prevent mutation on fabricator definition
+            result = angular.merge({}, current, result) // use object literal {} to prevent mutation on fabricator definition
             previous = current
           }
           fabDef = result
         }
 
-        return angular.extend({}, fabDef, override)
+        return angular.merge({}, fabDef, override)
       }
     }
   }
