@@ -22,7 +22,7 @@ angular.module('dummy')
 
   DS.defineResource({
     name: 'monkey',
-    endpoint: '/monkeys'
+    endpoint: '/bed/monkeys'
   })
 
 })
@@ -33,6 +33,7 @@ angular.module('dummy')
     restrict: 'A',
     scope: {},
     template: '<div>' +
+                '<button id="catnip" ng-click="ctrl.getCat()"><button>' +
                 '<div id="litter-box">{{ ctrl.catResult.name }}</div>' +
                 '<button id="monkey-button" ng-click="ctrl.getMonkeys()"><button>' +
                 '<ul>' +
@@ -46,13 +47,15 @@ angular.module('dummy')
 
       var vm = this
 
-      DS.find('cat', 1).then(function(cat) {
-        vm.catResult = cat
-      })
+      vm.getCat = function() {
+        DS.find('cat', 1).then(function(cat) {
+          vm.catResult = cat
+        })
+      }
 
       vm.getMonkeys = function() {
         DS.findAll('monkey', { bunch: 10 }).then(function(monkeys) {
-          vm.monkeyBunch = monkey
+          vm.monkeyBunch = monkeys
         })
       }
 

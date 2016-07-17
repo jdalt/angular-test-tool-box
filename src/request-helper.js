@@ -7,14 +7,8 @@ angular.module('jdalt.toolBox')
 ) {
 
   // restBackend specific
-  function getResource(resourceName) {
-    return DS.definitions.filter(function(def) {
-      return def.name == resourceName
-    })
-  }
-
   function getEndpoint(resourceName) {
-    var resource = getResource(resourceName)
+    var resource = DS.definitions[resourceName]
     if(!resource) throw new Error('Unable to find path for resource ' + resourceName)
     return resource.endpoint
   }
@@ -44,11 +38,11 @@ angular.module('jdalt.toolBox')
   }
 
   function getUrlMany(def, params) {
-    fullPath(def) + queryString(params)
+    return fullPath(def) + queryString(params)
   }
 
   function getUrlOne(def, id) {
-    fullPath(def) + '/' + id
+    return fullPath(def) + '/' + id
   }
 
   return {
