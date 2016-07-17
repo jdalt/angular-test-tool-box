@@ -20,7 +20,7 @@ describe('DirectiveHelper', function() {
 
   describe('for directives that accept scope parameters', function() {
     beforeEach(inject(function(DirectiveHelper) {
-      compile = DirectiveHelper.compileFn('<div bidirectional-directive two-way="twoWay"></div>', false)
+      compile = DirectiveHelper.compileFn('<div bi-directional-directive two-way="twoWay"></div>', false)
     }))
 
     it('should compile a bidirectional directive', function() {

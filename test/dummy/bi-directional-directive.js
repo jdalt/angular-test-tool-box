@@ -1,7 +1,7 @@
 'use strict'
 
 angular.module('dummy')
-.directive('bidirectionalDirective', function() {
+.directive('biDirectionalDirective', function() {
   return {
     restrict: 'A',
     scope: {},
