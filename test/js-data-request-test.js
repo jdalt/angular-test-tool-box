@@ -32,21 +32,18 @@ describe('JsData Request', function() {
   describe('raw url expectations', function() {
     it('should compile with expectation of /api/mammals/cats/1 request', function() {
       Req.expectOne('/api/mammals/cats', 1, { result: { id: 1, name: 'Roger' } })
-      dom.clickButton('#catnip')
-      Req.flush()
+      dom.clickButton('#catnip').flush()
     })
 
     it('should request cat and display cat name in #litter-box', function() {
       Req.expectOne('/api/mammals/cats', 1, { result: { id: 1, name: 'Meowth' } })
-      dom.clickButton('#catnip')
-      Req.flush()
+      dom.clickButton('#catnip').flush()
       expect(dom.findText('#litter-box')).toBe('Meowth')
     })
 
     it('should request monkey and display monkey names <li>', function() {
       Req.expectMany('/api/bed/monkeys', { bunch: 10 }, { result: [{ id: 1, name: 'Monkey 1' }, { id: 2, name: 'Monkey 2'}] })
-      dom.clickButton('#monkey-button')
-      Req.flush()
+      dom.clickButton('#monkey-button').flush()
 
       expect(dom.findText('ul li')).toContain('Monkey 1')
       expect(dom.findText('ul li')).toContain('Monkey 2')
@@ -66,28 +63,24 @@ describe('JsData Request', function() {
 
     it('should compile with expectation of "cat"', function() {
       Req.expectOne('cat', 1)
-      dom.clickButton('#catnip')
-      Req.flush()
+      dom.clickButton('#catnip').flush()
     })
 
     it('should request cat and display cat name of default cat fabricator in #litter-box', function() {
       Req.expectOne('cat', 1)
-      dom.clickButton('#catnip')
-      Req.flush()
+      dom.clickButton('#catnip').flush()
       expect(dom.findText('#litter-box')).toBe('Snarl')
     })
 
     it('should request cat and display cat name in #litter-box', function() {
       Req.expectOne('cat', 1, { name: 'Meowth' })
-      dom.clickButton('#catnip')
-      Req.flush()
+      dom.clickButton('#catnip').flush()
       expect(dom.findText('#litter-box')).toBe('Meowth')
     })
 
     it('should request monkey and display monkey names <li>', function() {
       Req.expectMany('monkey', { bunch: 10 }, [{ id: 1, name: 'Monkey 1' }, { id: 2, name: 'Monkey 2', bananas: 77 }])
-      dom.clickButton('#monkey-button')
-      Req.flush()
+      dom.clickButton('#monkey-button').flush()
 
       expect(dom.findText('ul li')).toContain('Monkey 1')
       expect(dom.findText('ul li')).toContain('10')
