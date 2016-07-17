@@ -7,6 +7,8 @@ angular.module('dummy')
     scope: {},
     template: '\n<div id="main">\n' +
               '  <h2>Multi Dom Directive H2</h2>\n' +
+              '  <button>Doppelganger</button>\n' +
+              '  <button>Doppelganger</button>\n' +
               '  <ul id="thinger-list">\n' +
               '    <li>Thing 1</li>\n' +
               '    <li>Thing 2</li>\n' +

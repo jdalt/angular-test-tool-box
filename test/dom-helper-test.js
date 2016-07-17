@@ -20,6 +20,15 @@ describe('DomHelper', function() {
       expect(dom.findText('p')).toBe('Something Happened!')
     })
 
+    it('should clickButton for button containing "Do A Thing" and cause "Something Happened!" result', function() {
+      dom.clickButton('Do A Thing')
+      expect(dom.findText('p')).toBe('Something Happened!')
+    })
+
+    it('should throw exception when clickButton not found', function() {
+      expect(function() { dom.clickButton('Ghost Train') }).toThrow(new Error('<button>Ghost Train</button> not found'))
+    })
+
     it('should proxy elment click" result', function() {
       dom.find('#simp-button').click()
       expect(dom.findText('p')).toBe('Something Happened!')
@@ -39,6 +48,10 @@ describe('DomHelper', function() {
     beforeEach(inject(function(DirectiveHelper) {
       dom = DirectiveHelper.compileFn('<div multi-dom-directive></div>', false)()
     }))
+
+    it('should throw exception when clickButton finds two Doppelganger buttons', function() {
+      expect(function() { dom.clickButton('Doppelganger') }).toThrow(new Error('More than one <button>Doppelganger</button> found'))
+    })
 
     it('should findNthText items in #thinger-list', function() {
       expect(dom.findNthText('#thinger-list li', 0)).toBe('Thing 1')

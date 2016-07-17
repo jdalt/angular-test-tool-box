@@ -30,6 +30,16 @@ angular.module('jdalt.toolBox')
         return DomHelper(clickEl)
       },
 
+      clickButton: function(buttonText) {
+        var buttonEl = root.find('button:contains("' + buttonText + '")')
+
+        if(buttonEl.length == 0) throw new Error('<button>' + buttonText + '</button> not found')
+        if(buttonEl.length >= 2) throw new Error('More than one <button>' + buttonText + '</button> found')
+
+        buttonEl.click()
+        return DomHelper(buttonEl)
+      },
+
       findText: function(selector) {
         return root.find(selector).text()
       },
