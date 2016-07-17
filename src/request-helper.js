@@ -1,9 +1,31 @@
 angular.module('jdalt.toolBox')
 .factory('RequestHelper', function(
   $httpBackend,
-  $httpParamSerializer
+  $httpParamSerializer,
+  DSHttpAdapter, // TODO: configure with provider
+  DS // TODO: configure with provider
 ) {
 
+  // restBackend specific
+  function getResource(resourceName) {
+    return DS.definitions.filter(function(def) {
+      return def.name == resourceName
+    })
+  }
+
+  function getEndpoint(resourceName) {
+    var resource = getResource(resourceName)
+    if(!resource) throw new Error('Unable to find path for resource ' + resourceName)
+    return resource.endpoint
+  }
+
+  // TODO: this needs to be injected/set by a provider to remove direct dep on JsData
+  var basePath = DSHttpAdapter.defaults.basePath
+  function resourcePath(resourceName) {
+    return basePath + getEndpoint(resourceName)
+  }
+
+  // general request handling
   function queryString(params) {
     var qs = ''
 
@@ -15,36 +37,50 @@ angular.module('jdalt.toolBox')
     return qs
   }
 
+  function fullPath(def) {
+    if(def[0] == '/') return def // it's a path
+
+    return resourcePath(def)
+  }
+
+  function getUrlMany(def, params) {
+    fullPath(def) + queryString(params)
+  }
+
+  function getUrlOne(def, id) {
+    fullPath(def) + '/' + id
+  }
+
   return {
     flush: $httpBackend.flush,
 
-    expectMany: function(path, params, res) {
-      var url = path + queryString(params)
+    expectMany: function(def, params, res) {
+      var url = getUrlMany(def, params)
       $httpBackend.expectGET(url).respond(200, res)
     },
 
-    expectOne: function(path, id, res) {
-      var url = path + '/' + id
+    expectOne: function(def, id, res) {
+      var url = getUrlOne(def, id)
       $httpBackend.expectGET(url).respond(200, res)
     },
 
-    expectCreate: function(path, req, res) {
-      var url = path
+    expectCreate: function(def, req, res) {
+      var url = getUrlMany(def)
       $httpBackend.expectPOST(url, req).respond(200, res)
     },
 
-    expectUpdate: function(path, id, req, res) {
-      var url = path + '/' + id
+    expectUpdate: function(def, id, req, res) {
+      var url = getUrlOne(def, id)
       $httpBackend.expectPUT(url, req).respond(200, res)
     },
 
-    expectUpsert: function(path, id, req, res) {
-      var url = path + '/' + id
+    expectUpsert: function(def, id, req, res) {
+      var url = getUrlOne(def, id)
       $httpBackend.expectPATCH(url, req).respond(200, res)
     },
 
-    expectDelete: function(path, id) {
-      var url = path + '/' + id
+    expectDelete: function(def, id) {
+      var url = getUrlOne(def, id)
       $httpBackend.expectDELETE(url).respond(204)
     },
   }
