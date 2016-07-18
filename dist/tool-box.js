@@ -2,6 +2,72 @@
 
 angular.module('jdalt.toolBox', [])
 
+// Required for Angular < 1.4
+angular.module('jdalt.toolBox')
+.provider('$backportedParamSerializer', function () {
+
+  function sortedKeys(obj) {
+    return Object.keys(obj).sort();
+  }
+
+  function forEachSorted(obj, iterator, context) {
+    var keys = sortedKeys(obj);
+    for (var i = 0; i < keys.length; i++) {
+      iterator.call(context, obj[keys[i]], keys[i]);
+    }
+    return keys;
+  }
+
+  function encodeUriQuery(val, pctEncodeSpaces) {
+    return encodeURIComponent(val).
+      replace(/%40/gi, '@').
+      replace(/%3A/gi, ':').
+      replace(/%24/g, '$').
+      replace(/%2C/gi, ',').
+      replace(/%3B/gi, ';').
+      replace(/%20/g, (pctEncodeSpaces ? '%20' : '+'));
+  }
+
+  function serializeValue(v) {
+    if (isObject(v)) {
+      return isDate(v) ? v.toISOString() : toJson(v);
+    }
+    return v;
+  }
+
+  function isUndefined(value) { return typeof value === 'undefined'; }
+
+  var isArray = Array.isArray;
+
+  function isObject(value) {
+    // http://jsperf.com/isobject4
+    return value !== null && typeof value === 'object';
+  }
+
+
+  return {
+    $get: function() {
+      return function ngParamSerializer(params) {
+        if (!params) return '';
+        var parts = [];
+        forEachSorted(params, function(value, key) {
+          if (value === null || isUndefined(value)) return;
+          if (isArray(value)) {
+            forEach(value, function(v, k) {
+              parts.push(encodeUriQuery(key) + '=' + encodeUriQuery(serializeValue(v)));
+            });
+          } else {
+            parts.push(encodeUriQuery(key) + '=' + encodeUriQuery(serializeValue(value)));
+          }
+        });
+
+        return parts.join('&');
+      };
+    }
+  }
+
+})
+
 angular.module('jdalt.toolBox')
 .factory('DirectiveHelper', ["$compile", "$rootScope", "$httpBackend", "DomHelper", function(
   $compile,
@@ -170,7 +236,6 @@ angular.module('jdalt.toolBox')
 
 })
 
-
 angular.module('jdalt.toolBox')
 .provider('RequestHelper', function() {
 
@@ -188,9 +253,9 @@ angular.module('jdalt.toolBox')
       basePath = path
     },
 
-    $get: ["$httpBackend", "$httpParamSerializer", "Fabricator", "$injector", function (
+    $get: ["$httpBackend", "$backportedParamSerializer", "Fabricator", "$injector", function (
       $httpBackend,
-      $httpParamSerializer,
+      $backportedParamSerializer,
       Fabricator,
       $injector
     ) {
@@ -239,7 +304,7 @@ angular.module('jdalt.toolBox')
         var qs = ''
 
         if(params) {
-          qs = $httpParamSerializer(params)
+          qs = $backportedParamSerializer(params)
           if(qs != '') qs = '?' + qs
         }
 
