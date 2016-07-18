@@ -1,7 +1,15 @@
 angular.module('jdalt.toolBox')
 .provider('RequestHelper', function() {
 
+  var responseTransformer = function defaultResponseTransformer(data) {
+    return { result: data }
+  }
+
   return {
+    setResponseTransfomer: function(transformFn) {
+      responseTransformer = transformFn
+    },
+
     $get: function (
       $httpBackend,
       $httpParamSerializer,
@@ -21,14 +29,6 @@ angular.module('jdalt.toolBox')
       var basePath = DSHttpAdapter.defaults.basePath
       function resourcePath(resourceName) {
         return basePath + getEndpoint(resourceName)
-      }
-
-      function responseTransformer(data) {
-        return { result: data }
-      }
-
-      function defaultResponseTransformer(data) {
-        return data
       }
 
       function fabricated(def, props) {
