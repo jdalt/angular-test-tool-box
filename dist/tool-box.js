@@ -195,7 +195,7 @@ angular.module('jdalt.toolBox')
       $injector
     ) {
 
-      var resourceDefs
+      var resourceDefs = {}
       if($injector.has('DS')) {
         var DS = $injector.get('DS')
         resourceDefs = DS.definitions
