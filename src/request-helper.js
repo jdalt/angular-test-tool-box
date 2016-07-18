@@ -1,13 +1,13 @@
 angular.module('jdalt.toolBox')
 .provider('RequestHelper', function() {
 
-  var basePath = '/api'
-  var responseTransformer = function defaultResponseTransformer(data) {
-    return { result: data }
+  var basePath = ''
+  var responseTransformer = function defaultTransformer(data) {
+    return data
   }
 
   return {
-    setResponseTransfomer: function(transformFn) {
+    setResponseTransformer: function(transformFn) {
       responseTransformer = transformFn
     },
 
@@ -28,7 +28,6 @@ angular.module('jdalt.toolBox')
         resourceDefs = DS.definitions
       }
 
-      // restBackend specific
       function getEndpoint(resourceName) {
         var resource = resourceDefs[resourceName]
         if(!resource) throw new Error('Unable to find path for resource ' + resourceName)

@@ -2,7 +2,14 @@ describe('JsData Request', function() {
 
   var compile, Req, dom
 
-  beforeEach(module('jdalt.toolBox', function (FabricatorProvider) {
+  beforeEach(module('jdalt.toolBox', function (FabricatorProvider, RequestHelperProvider, DSHttpAdapterProvider) {
+
+    function wrapResult(data) {
+      return { result: data }
+    }
+
+    RequestHelperProvider.setResponseTransformer(wrapResult)
+    RequestHelperProvider.setBasePath(DSHttpAdapterProvider.defaults.basePath)
 
     FabricatorProvider
     .fab('cat', {
