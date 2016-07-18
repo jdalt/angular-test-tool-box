@@ -173,6 +173,7 @@ angular.module('jdalt.toolBox')
 angular.module('jdalt.toolBox')
 .provider('RequestHelper', function() {
 
+  var basePath = '/api'
   var responseTransformer = function defaultResponseTransformer(data) {
     return { result: data }
   }
@@ -182,12 +183,15 @@ angular.module('jdalt.toolBox')
       responseTransformer = transformFn
     },
 
-    $get: ["$httpBackend", "$httpParamSerializer", "Fabricator", "$injector", "DSHttpAdapter", function (
+    setBasePath: function(path) {
+      basePath = path
+    },
+
+    $get: ["$httpBackend", "$httpParamSerializer", "Fabricator", "$injector", function (
       $httpBackend,
       $httpParamSerializer,
       Fabricator,
-      $injector,
-      DSHttpAdapter // TODO: configure with provider
+      $injector
     ) {
 
       var resourceDefs
@@ -203,8 +207,6 @@ angular.module('jdalt.toolBox')
         return resource.endpoint
       }
 
-      // TODO: this needs to be injected/set by a provider to remove direct dep on JsData
-      var basePath = DSHttpAdapter.defaults.basePath
       function resourcePath(resourceName) {
         return basePath + getEndpoint(resourceName)
       }
@@ -241,7 +243,7 @@ angular.module('jdalt.toolBox')
           if(qs != '') qs = '?' + qs
         }
 
-      return qs
+        return qs
       }
 
       function isPath(def) {
@@ -251,7 +253,7 @@ angular.module('jdalt.toolBox')
       function fullPath(def) {
         if(isPath(def)) return def
 
-          return resourcePath(def)
+        return resourcePath(def)
       }
 
       function getUrlMany(def, params) {
