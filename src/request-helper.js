@@ -17,7 +17,7 @@ angular.module('jdalt.toolBox')
 
     $get: function (
       $httpBackend,
-      $httpParamSerializer,
+      $backportedParamSerializer,
       Fabricator,
       $injector
     ) {
@@ -66,7 +66,7 @@ angular.module('jdalt.toolBox')
         var qs = ''
 
         if(params) {
-          qs = $httpParamSerializer(params)
+          qs = $backportedParamSerializer(params)
           if(qs != '') qs = '?' + qs
         }
 

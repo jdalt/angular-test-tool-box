@@ -11,7 +11,7 @@ module.exports = function(config) {
   config.set({
 
     preprocessors: {
-      'src/*.js': ['coverage']
+      'src/!(backported)*.js': ['coverage']
     },
 
     frameworks: ['jasmine'],
