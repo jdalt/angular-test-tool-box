@@ -14,13 +14,19 @@ angular.module('jdalt.toolBox')
       $httpBackend,
       $httpParamSerializer,
       Fabricator,
-      DSHttpAdapter, // TODO: configure with provider
-      DS // TODO: configure with provider
+      $injector,
+      DSHttpAdapter // TODO: configure with provider
     ) {
+
+      var resourceDefs
+      if($injector.has('DS')) {
+        var DS = $injector.get('DS')
+        resourceDefs = DS.definitions
+      }
 
       // restBackend specific
       function getEndpoint(resourceName) {
-        var resource = DS.definitions[resourceName]
+        var resource = resourceDefs[resourceName]
         if(!resource) throw new Error('Unable to find path for resource ' + resourceName)
         return resource.endpoint
       }
