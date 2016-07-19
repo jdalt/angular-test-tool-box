@@ -16,6 +16,7 @@ angular.module('dummy')
               '  </ul>\n' +
               '  <input id="deep-thought-inp" type="text" ng-model="ctrl.allThought" />\n' +
               '  <div id="deep-thought-val">{{ ctrl.allThought }}</div>\n' +
+              '  <div id="french-yeoman" class="huguenot proletariat"></div>\n' +
               '</div>\n',
     controllerAs: 'ctrl',
     controller: function() {

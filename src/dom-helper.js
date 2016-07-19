@@ -55,6 +55,14 @@ angular.module('jdalt.toolBox')
         return this
       },
 
+      cssClasses: function() {
+        return root.prop('class')
+      },
+
+      hasClass: function(cssClass) {
+        return root.hasClass(cssClass)
+      },
+
       findText: function(selector) {
         return root.find(selector).text()
       },

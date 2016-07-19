@@ -84,6 +84,11 @@ describe('DomHelper', function() {
       dom.find('#deep-thought-inp').val('Fun Fun Fun')
       expect(dom.findText('#deep-thought-val')).toBe('Fun Fun Fun')
     })
+
+    it('should get cssClasses() and return hasClass() true for #french-yeoman', function() {
+      expect(dom.find('#french-yeoman').cssClasses()).toBe('huguenot proletariat')
+      expect(dom.find('#french-yeoman').hasClass('proletariat')).toBeTruthy()
+    })
   })
 
 })
