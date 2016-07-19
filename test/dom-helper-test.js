@@ -59,6 +59,12 @@ describe('DomHelper', function() {
       expect(dom.findNthText('#thinger-list li', 2)).toBe('Thing 3')
     })
 
+    it('should findNth items in #thinger-list', function() {
+      expect(dom.findNth('#thinger-list li', 0).text()).toBe('Thing 1')
+      expect(dom.findNth('#thinger-list li', 1).text()).toBe('Thing 2')
+      expect(dom.findNth('#thinger-list li', 2).text()).toBe('Thing 3')
+    })
+
     it('should count items in #thinger-list', function() {
       expect(dom.count('#thinger-list li')).toBe(3)
     })
