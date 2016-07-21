@@ -18,6 +18,13 @@ describe('Fabricator', function() {
     Req.flush()
   })
 
+  it('expectOne should use of response when 2nd param is obj', function() {
+    dom = compile()
+    Req.expectOne('/api/rocket', { id: 1 })
+    dom.click('#radio-one')
+    Req.flush()
+  })
+
   it('should expectMany /api/rocket when #radio-many clicked', function() {
     dom = compile()
     Req.expectMany('/api/rocket')

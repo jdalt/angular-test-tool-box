@@ -71,7 +71,7 @@ describe('JsData Request', function() {
 
   describe('resource definition expectations', function() {
     it('should throw an exception when resource definition "junk" is not found', function() {
-      expect(function() { Req.expectOne('junk', 1) }).toThrow(new Error('Unable to find path for resource junk'))
+      expect(function() { Req.expectOne('junk', 1) }).toThrow(new Error('No fabricator definition for junk'))
     })
 
     it('should throw an exception when response is not an array for expectMany', function() {
@@ -87,6 +87,12 @@ describe('JsData Request', function() {
 
     it('should request cat and display cat name of default cat fabricator in #litter-box', function() {
       Req.expectOne('cat', 1)
+      dom.click('#catnip').flush()
+      expect(dom.text('#litter-box')).toBe('Snarl')
+    })
+
+    it('should request cat and display cat name of default cat fabricator in #litter-box by getting id from response', function() {
+      Req.expectOne('cat')
       dom.click('#catnip').flush()
       expect(dom.text('#litter-box')).toBe('Snarl')
     })

@@ -40,19 +40,18 @@ angular.module('jdalt.toolBox')
 
       function fabricated(def, props) {
         if(isPath(def)) return props
-        var fabObj = Fabricator(def, props)
-        return responseTransformer(fabObj)
+        return Fabricator(def, props)
       }
 
       function manyFabricated(def, props) {
         if(isPath(def)) return props
 
-          var fabObjs = []
-          props.forEach(function(propObj) {
-            fabObjs.push(Fabricator(def, propObj))
-          })
+        var fabObjs = []
+        props.forEach(function(propObj) {
+          fabObjs.push(Fabricator(def, propObj))
+        })
 
-          return responseTransformer(fabObjs)
+        return fabObjs
       }
 
       function checkArray(def, props) {
@@ -97,12 +96,20 @@ angular.module('jdalt.toolBox')
         expectMany: function(def, params, res) {
           checkArray(def, res)
           var url = getUrlMany(def, params)
-          $httpBackend.expectGET(url).respond(200, manyFabricated(def, res))
+          var resObjs = manyFabricated(def, res)
+          if(!isPath(def)) resObjs = responseTransformer(resObjs)
+          $httpBackend.expectGET(url).respond(200, resObjs)
         },
 
         expectOne: function(def, id, res) {
+          // Handle as (def, res) vs (def, id, res)
+          if(angular.isObject(id)) res = id
+          var resObj = fabricated(def, res)
+          if(angular.isObject(id) || (id == null  && res == null) ) id = resObj.id
+          if(!isPath(def)) resObj = responseTransformer(resObj)
+
           var url = getUrlOne(def, id)
-          $httpBackend.expectGET(url).respond(200, fabricated(def,res))
+          $httpBackend.expectGET(url).respond(200, resObj)
         },
 
         expectCreate: function(def, req, res) {
