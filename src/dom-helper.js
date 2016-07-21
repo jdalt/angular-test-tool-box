@@ -66,14 +66,6 @@ angular.module('jdalt.toolBox')
         return root.hasClass(cssClass)
       },
 
-      findText: function(selector) {
-        return root.find(selector).text()
-      },
-
-      findNthText: function(selector, nth) {
-        return root.find(selector).eq(nth).text()
-      },
-
       count: function(selector) {
         var el = root
         if(selector) el = root.find(selector)
@@ -88,8 +80,11 @@ angular.module('jdalt.toolBox')
         return DomHelper(root.find(selector).eq(nth))
       },
 
-      text: function() {
-        return root.text()
+      text: function(selector, nth) {
+        var el = root
+        if(selector) el = root.find(selector)
+        if(nth != null) el = el.eq(nth)
+        return el.text()
       }
 
     }

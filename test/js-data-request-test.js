@@ -57,15 +57,15 @@ describe('JsData Request', function() {
     it('should request cat and display cat name in #litter-box', function() {
       Req.expectOne('/api/mammals/cats', 1, { result: { id: 1, name: 'Meowth' } })
       dom.click('#catnip').flush()
-      expect(dom.findText('#litter-box')).toBe('Meowth')
+      expect(dom.text('#litter-box')).toBe('Meowth')
     })
 
     it('should request monkey and display monkey names <li>', function() {
       Req.expectMany('/api/bed/monkeys', { bunch: 10 }, { result: [{ id: 1, name: 'Monkey 1' }, { id: 2, name: 'Monkey 2'}] })
       dom.click('#monkey-button').flush()
 
-      expect(dom.findText('ul li')).toContain('Monkey 1')
-      expect(dom.findText('ul li')).toContain('Monkey 2')
+      expect(dom.text('ul li')).toContain('Monkey 1')
+      expect(dom.text('ul li')).toContain('Monkey 2')
     })
   })
 
@@ -88,23 +88,23 @@ describe('JsData Request', function() {
     it('should request cat and display cat name of default cat fabricator in #litter-box', function() {
       Req.expectOne('cat', 1)
       dom.click('#catnip').flush()
-      expect(dom.findText('#litter-box')).toBe('Snarl')
+      expect(dom.text('#litter-box')).toBe('Snarl')
     })
 
     it('should request cat and display cat name in #litter-box', function() {
       Req.expectOne('cat', 1, { name: 'Meowth' })
       dom.click('#catnip').flush()
-      expect(dom.findText('#litter-box')).toBe('Meowth')
+      expect(dom.text('#litter-box')).toBe('Meowth')
     })
 
     it('should request monkey and display monkey names <li>', function() {
       Req.expectMany('monkey', { bunch: 10 }, [{ id: 1, name: 'Monkey 1' }, { id: 2, name: 'Monkey 2', bananas: 77 }])
       dom.click('#monkey-button').flush()
 
-      expect(dom.findText('ul li')).toContain('Monkey 1')
-      expect(dom.findText('ul li')).toContain('10')
-      expect(dom.findText('ul li')).toContain('Monkey 2')
-      expect(dom.findText('ul li')).toContain('77')
+      expect(dom.text('ul li')).toContain('Monkey 1')
+      expect(dom.text('ul li')).toContain('10')
+      expect(dom.text('ul li')).toContain('Monkey 2')
+      expect(dom.text('ul li')).toContain('77')
     })
   })
 
