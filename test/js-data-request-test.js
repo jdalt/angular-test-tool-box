@@ -2,6 +2,18 @@ describe('JsData Request', function() {
 
   var compile, Req, dom
 
+  beforeEach(function () {
+    module('dummy-js-data')
+  })
+
+  // Turn off js-data logging to keep test reporter clear
+  beforeEach(module('dummy', function (DSHttpAdapterProvider) {
+    angular.extend(DSHttpAdapterProvider.defaults, {
+      log: false,
+      error: false,
+    })
+  }))
+
   beforeEach(module('jdalt.toolBox', function (FabricatorProvider, RequestHelperProvider, DSHttpAdapterProvider) {
 
     function wrapResult(data) {

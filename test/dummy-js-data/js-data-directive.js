@@ -1,6 +1,6 @@
 'use strict'
 
-angular.module('dummy')
+angular.module('dummy-js-data')
 .config(function(DSHttpAdapterProvider) {
   angular.extend(DSHttpAdapterProvider.defaults, {
     basePath: '/api',
@@ -10,7 +10,7 @@ angular.module('dummy')
   })
 })
 
-angular.module('dummy')
+angular.module('dummy-js-data')
 .run(function(
   DS
 ) {
@@ -27,7 +27,7 @@ angular.module('dummy')
 
 })
 
-angular.module('dummy')
+angular.module('dummy-js-data')
 .directive('jsDataDirective', function() {
   return {
     restrict: 'A',
