@@ -114,7 +114,10 @@ angular.module('jdalt.toolBox')
       flush: $httpBackend.flush,
 
       log: function() {
-        console.log('element', this.element)
+        root.each(function(index, el) {
+          console.log('element', index, el)
+        })
+        return this
       },
 
       click: function(selector) {
