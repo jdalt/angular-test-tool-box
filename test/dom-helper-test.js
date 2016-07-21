@@ -69,6 +69,10 @@ describe('DomHelper', function() {
       expect(dom.count('#thinger-list li')).toBe(3)
     })
 
+    it('should count items in current context', function() {
+      expect(dom.find('#thinger-list li').count()).toBe(3)
+    })
+
     it('should throw exception when setInputValue selector is not found', function() {
       expect(function() { dom.setInputValue('#blah') }).toThrow(new Error('Element "#blah" not found to setInputValue'))
     })

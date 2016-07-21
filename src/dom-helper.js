@@ -75,7 +75,9 @@ angular.module('jdalt.toolBox')
       },
 
       count: function(selector) {
-        return root.find(selector).length
+        var el = root
+        if(selector) el = root.find(selector)
+        return el.length
       },
 
       find: function(selector) {
