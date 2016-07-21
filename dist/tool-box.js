@@ -249,6 +249,19 @@ angular.module('jdalt.toolBox')
 })
 
 angular.module('jdalt.toolBox')
+.factory('mockState', ["$state", "$rootScope", function(
+  $state,
+  $rootScope
+) {
+
+  return function mockState(stateName, stateParams) {
+    $state.go(stateName, stateParams)
+    $rootScope.$apply()
+  }
+
+}])
+
+angular.module('jdalt.toolBox')
 .provider('RequestHelper', function() {
 
   var basePath = ''

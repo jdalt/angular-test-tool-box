@@ -22,10 +22,11 @@ module.exports = function(config) {
       'bower_components/angular-mocks/angular-mocks.js',
       'bower_components/js-data/dist/js-data.js',
       'bower_components/js-data-angular/dist/js-data-angular.js',
+      'bower_components/angular-ui-router/release/angular-ui-router.js',
 
       'src/*.js',
       'wrapper/*.js',
-      'test/dummy/*.js',
+      'test/dummy*/**/*.js',
       'test/*-test.js',
       'karma.start.js'
     ],
