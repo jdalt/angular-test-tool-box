@@ -72,12 +72,10 @@ angular.module('jdalt.toolBox')
         return el.length
       },
 
-      find: function(selector) {
-        return DomHelper(root.find(selector))
-      },
-
-      findNth: function(selector, nth) {
-        return DomHelper(root.find(selector).eq(nth))
+      find: function(selector, nth) {
+        var el = root.find(selector)
+        if(nth != null) el = el.eq(nth)
+        return DomHelper(el)
       },
 
       text: function(selector, nth) {
