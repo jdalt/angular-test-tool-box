@@ -34,6 +34,23 @@ angular.module('jdalt.toolBox')
         return DomHelper(clickEl)
       },
 
+      // Experimental, attempts to generate clicks when all else fails
+      _clickHard: function(selector) {
+        var el = root[0]
+        if(selector) el = root.find(selector)[0]
+
+        var ev = document.createEvent("MouseEvent");
+        ev.initMouseEvent(
+          "click",
+          true /* bubble */, true /* cancelable */,
+          window, null,
+          0, 0, 0, 0, /* coordinates */
+          false, false, false, false, /* modifier keys */
+          0 /*left*/, null
+        )
+        el.dispatchEvent(ev)
+      },
+
       clickButton: function(buttonText) {
         var buttonEl = root.find('button:contains("' + buttonText + '")')
 
