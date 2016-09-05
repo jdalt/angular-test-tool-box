@@ -174,8 +174,8 @@ angular.module('jdalt.toolBox')
       },
 
       val: function(value) {
-        root.val(value).trigger('change')
-        return this
+        if(value) root.val(value).trigger('change')
+        return root.val()
       },
 
       cssClasses: function() {

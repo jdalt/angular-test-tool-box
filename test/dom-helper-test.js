@@ -90,8 +90,14 @@ describe('DomHelper', function() {
 
     it('should set input val() on input#deep-thought-inp', function() {
       expect(dom.text('#deep-thought-val')).toBe('42')
-      dom.find('#deep-thought-inp').val('Fun Fun Fun')
+      var ret = dom.find('#deep-thought-inp').val('Fun Fun Fun')
       expect(dom.text('#deep-thought-val')).toBe('Fun Fun Fun')
+      expect(ret).toBe('Fun Fun Fun')
+    })
+
+    it('should reutrn current val() when no args are sent', function() {
+      expect(dom.text('#deep-thought-val')).toBe('42')
+      expect(dom.find('#deep-thought-inp').val()).toBe('42')
     })
 
     it('should get cssClasses() and return hasClass() true for #french-yeoman', function() {
