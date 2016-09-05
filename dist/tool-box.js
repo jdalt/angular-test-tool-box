@@ -120,7 +120,7 @@ angular.module('jdalt.toolBox')
         return this
       },
 
-      click: function(selector) {
+      click: function(selector, nth) {
         if(!selector) { // proxy click on root
           root.click()
           return this
@@ -130,6 +130,7 @@ angular.module('jdalt.toolBox')
         if(!clickEl.length) {
           throw new Error('Element "'+ selector +'" not found to click')
         }
+        if(nth != null) clickEl = clickEl.eq(nth)
         clickEl.click()
 
         return DomHelper(clickEl)
