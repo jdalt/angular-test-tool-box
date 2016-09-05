@@ -67,4 +67,24 @@ describe('Fabricator', function() {
     Req.flush()
   })
 
+  describe('when', function() {
+    it('shoud respond with the same value for multiple requests', function() {
+      dom = compile()
+      Req.whenOne('/api/rocket', 1)
+      dom.click('#radio-one')
+      dom.click('#radio-one')
+      dom.click('#radio-one')
+      Req.flush()
+    })
+
+    it('shoud respond with the same value for multiple requests', function() {
+      dom = compile()
+      Req.whenMany('/api/rocket')
+      dom.click('#radio-many')
+      dom.click('#radio-many')
+      dom.click('#radio-many')
+      Req.flush()
+    })
+  })
+
 })

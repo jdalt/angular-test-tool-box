@@ -363,6 +363,14 @@ angular.module('jdalt.toolBox')
           $httpBackend.expectGET(url).respond(200, resObjs)
         },
 
+        whenMany: function(def, params, res) {
+          checkArray(def, res)
+          var url = getUrlMany(def, params)
+          var resObjs = manyFabricated(def, res)
+          if(!isPath(def)) resObjs = responseTransformer(resObjs)
+          $httpBackend.whenGET(url).respond(200, resObjs)
+        },
+
         expectOne: function(def, id, res) {
           // Handle as (def, res) vs (def, id, res)
           if(angular.isObject(id)) res = id
@@ -372,6 +380,17 @@ angular.module('jdalt.toolBox')
 
           var url = getUrlOne(def, id)
           $httpBackend.expectGET(url).respond(200, resObj)
+        },
+
+        whenOne: function(def, id, res) {
+          // Handle as (def, res) vs (def, id, res)
+          if(angular.isObject(id)) res = id
+          var resObj = fabricated(def, res)
+          if(angular.isObject(id) || (id == null  && res == null) ) id = resObj.id
+          if(!isPath(def)) resObj = responseTransformer(resObj)
+
+          var url = getUrlOne(def, id)
+          $httpBackend.whenGET(url).respond(200, resObj)
         },
 
         expectCreate: function(def, req, res) {
