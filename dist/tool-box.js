@@ -373,6 +373,7 @@ angular.module('jdalt.toolBox')
         flush: $httpBackend.flush,
 
         expectMany: function(def, params, res) {
+          if(!isPath(def) && typeof res == 'undefined')  res = []
           checkArray(def, res)
           var url = getUrlMany(def, params)
           var resObjs = manyFabricated(def, res)
@@ -381,6 +382,7 @@ angular.module('jdalt.toolBox')
         },
 
         whenMany: function(def, params, res) {
+          if(!isPath(def) && typeof res == 'undefined')  res = []
           checkArray(def, res)
           var url = getUrlMany(def, params)
           var resObjs = manyFabricated(def, res)

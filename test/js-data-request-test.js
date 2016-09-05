@@ -112,6 +112,25 @@ describe('JsData Request', function() {
       expect(dom.text('ul li')).toContain('Monkey 2')
       expect(dom.text('ul li')).toContain('77')
     })
+
+    it('should return empty array when no "res" arg are sent', function() {
+      Req.expectMany('monkey', { bunch: 10 })
+      dom.click('#monkey-button').flush()
+      expect(dom.count('ul li')).toBe(0)
+    })
+
+    it('should extend passed object with fabricator object', function() {
+      Req.expectMany('monkey', { bunch: 10 }, [{}])
+      dom.click('#monkey-button').flush()
+      expect(dom.text('ul li', 0)).toContain('Mustapha')
+      expect(dom.text('ul li', 0)).toContain('10')
+    })
+
+    it('should return empty array when no "res" arg sent', function() {
+      Req.whenMany('monkey', { bunch: 10 })
+      dom.click('#monkey-button').flush()
+      expect(dom.count('ul li')).toBe(0)
+    })
   })
 
 
