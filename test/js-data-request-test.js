@@ -112,7 +112,14 @@ describe('JsData Request', function() {
       expect(dom.text('ul li')).toContain('Monkey 2')
       expect(dom.text('ul li')).toContain('77')
     })
-  })
 
+    describe('expectDestroy', function() {
+      it('should initiate a DELETE request when cat-trap clicked', function() {
+        Req.expectDestroy('cat', 1)
+        dom.click('#cat-trap')
+        Req.flush()
+      })
+    })
+  })
 
 })

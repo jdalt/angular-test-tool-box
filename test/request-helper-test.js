@@ -62,7 +62,7 @@ describe('Fabricator', function() {
 
   it('should expectDelete /api/rocket/1 when #landing-zone clicked', function() {
     dom = compile()
-    Req.expectDelete('/api/rocket', 1)
+    Req.expectDestroy('/api/rocket', 1)
     dom.click('#landing-zone')
     Req.flush()
   })

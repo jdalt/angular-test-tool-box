@@ -39,6 +39,7 @@ angular.module('dummy-js-data')
                 '<ul>' +
                   '<li ng-repeat="monkey in ctrl.monkeyBunch">name: {{ monkey.name }} bananas: {{ monkey.bananas }}</li>' +
                 '</ul>' +
+                '<button id="cat-trap" ng-click="ctrl.destroyCat()"><button>' +
               '</div>',
     controllerAs: 'ctrl',
     controller: function(
@@ -57,6 +58,10 @@ angular.module('dummy-js-data')
         DS.findAll('monkey', { bunch: 10 }).then(function(monkeys) {
           vm.monkeyBunch = monkeys
         })
+      }
+
+      vm.destroyCat = function() {
+        DS.destroy('cat', 1)
       }
 
     }
