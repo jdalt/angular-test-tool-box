@@ -427,9 +427,9 @@ angular.module('jdalt.toolBox')
           $httpBackend.expectPATCH(url, req).respond(200, res)
         },
 
-        expectDelete: function(def, id) {
+        expectDestroy: function(def, id) {
           var url = getUrlOne(def, id)
-          $httpBackend.expectDELETE(url).respond(204)
+          $httpBackend.expectDELETE(url).respond(204, '')
         },
       }
     }]
