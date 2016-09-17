@@ -53,6 +53,11 @@ describe('DomHelper', function() {
       expect(function() { dom.clickButton('Doppelganger') }).toThrow(new Error('More than one <button>Doppelganger</button> found'))
     })
 
+    it('should return 2nd button element when ".click" is passed an array index as 2nd arg', function() {
+      var buttonDom = dom.click('button', 1)
+      expect(buttonDom.element.id).toBe('button-2')
+    })
+
     it('should find nth text() items in #thinger-list', function() {
       expect(dom.text('#thinger-list li', 0)).toBe('Thing 1')
       expect(dom.text('#thinger-list li', 1)).toBe('Thing 2')
@@ -85,8 +90,14 @@ describe('DomHelper', function() {
 
     it('should set input val() on input#deep-thought-inp', function() {
       expect(dom.text('#deep-thought-val')).toBe('42')
-      dom.find('#deep-thought-inp').val('Fun Fun Fun')
+      var ret = dom.find('#deep-thought-inp').val('Fun Fun Fun')
       expect(dom.text('#deep-thought-val')).toBe('Fun Fun Fun')
+      expect(ret).toBe('Fun Fun Fun')
+    })
+
+    it('should reutrn current val() when no args are sent', function() {
+      expect(dom.text('#deep-thought-val')).toBe('42')
+      expect(dom.find('#deep-thought-inp').val()).toBe('42')
     })
 
     it('should get cssClasses() and return hasClass() true for #french-yeoman', function() {

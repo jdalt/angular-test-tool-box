@@ -120,7 +120,7 @@ angular.module('jdalt.toolBox')
         return this
       },
 
-      click: function(selector) {
+      click: function(selector, nth) {
         if(!selector) { // proxy click on root
           root.click()
           return this
@@ -130,9 +130,27 @@ angular.module('jdalt.toolBox')
         if(!clickEl.length) {
           throw new Error('Element "'+ selector +'" not found to click')
         }
+        if(nth != null) clickEl = clickEl.eq(nth)
         clickEl.click()
 
         return DomHelper(clickEl)
+      },
+
+      // Experimental, attempts to generate clicks when all else fails
+      _clickHard: function(selector) {
+        var el = root[0]
+        if(selector) el = root.find(selector)[0]
+
+        var ev = document.createEvent("MouseEvent");
+        ev.initMouseEvent(
+          "click",
+          true /* bubble */, true /* cancelable */,
+          window, null,
+          0, 0, 0, 0, /* coordinates */
+          false, false, false, false, /* modifier keys */
+          0 /*left*/, null
+        )
+        el.dispatchEvent(ev)
       },
 
       clickButton: function(buttonText) {
@@ -156,8 +174,8 @@ angular.module('jdalt.toolBox')
       },
 
       val: function(value) {
-        root.val(value).trigger('change')
-        return this
+        if(value) root.val(value).trigger('change')
+        return root.val()
       },
 
       cssClasses: function() {
@@ -355,11 +373,21 @@ angular.module('jdalt.toolBox')
         flush: $httpBackend.flush,
 
         expectMany: function(def, params, res) {
+          if(!isPath(def) && typeof res == 'undefined')  res = []
           checkArray(def, res)
           var url = getUrlMany(def, params)
           var resObjs = manyFabricated(def, res)
           if(!isPath(def)) resObjs = responseTransformer(resObjs)
           $httpBackend.expectGET(url).respond(200, resObjs)
+        },
+
+        whenMany: function(def, params, res) {
+          if(!isPath(def) && typeof res == 'undefined')  res = []
+          checkArray(def, res)
+          var url = getUrlMany(def, params)
+          var resObjs = manyFabricated(def, res)
+          if(!isPath(def)) resObjs = responseTransformer(resObjs)
+          $httpBackend.whenGET(url).respond(200, resObjs)
         },
 
         expectOne: function(def, id, res) {
@@ -371,6 +399,17 @@ angular.module('jdalt.toolBox')
 
           var url = getUrlOne(def, id)
           $httpBackend.expectGET(url).respond(200, resObj)
+        },
+
+        whenOne: function(def, id, res) {
+          // Handle as (def, res) vs (def, id, res)
+          if(angular.isObject(id)) res = id
+          var resObj = fabricated(def, res)
+          if(angular.isObject(id) || (id == null  && res == null) ) id = resObj.id
+          if(!isPath(def)) resObj = responseTransformer(resObj)
+
+          var url = getUrlOne(def, id)
+          $httpBackend.whenGET(url).respond(200, resObj)
         },
 
         expectCreate: function(def, req, res) {
