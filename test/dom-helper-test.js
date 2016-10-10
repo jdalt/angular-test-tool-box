@@ -95,7 +95,7 @@ describe('DomHelper', function() {
       expect(ret).toBe('Fun Fun Fun')
     })
 
-    it('should reutrn current val() when no args are sent', function() {
+    it('should return current val() when no args are sent', function() {
       expect(dom.text('#deep-thought-val')).toBe('42')
       expect(dom.find('#deep-thought-inp').val()).toBe('42')
     })
