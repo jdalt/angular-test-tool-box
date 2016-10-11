@@ -180,6 +180,10 @@ describe('JsData Request', function() {
 
     })
 
+    xdescribe('expectCreate')
+    xdescribe('expectUpdate')
+    xdescribe('expectUpsert')
+
     describe('expectDestroy', function() {
       it('should initiate a DELETE request when cat-trap clicked', function() {
         Req.expectDestroy('cat', 1)
@@ -187,6 +191,7 @@ describe('JsData Request', function() {
         Req.flush()
       })
     })
+
   })
 
 })
