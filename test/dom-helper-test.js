@@ -117,6 +117,12 @@ describe('DomHelper', function() {
       expect(dom.text('span')).toContain('1,2')
     })
 
+    it('should show Element Mouse Down on mousedown and set x,y to 0,0 when params are not sent', function() {
+      dom.syntheticMouseEvent('mousedown')
+      expect(dom.text('span')).toContain('Element Mouse Down')
+      expect(dom.text('span')).toContain('0,0')
+    })
+
     it('should show Element Mouse Move on mousemove', function() {
       dom.syntheticMouseEvent('mousemove', 75,80)
       expect(dom.text('span')).toContain('Element Mouse Move')

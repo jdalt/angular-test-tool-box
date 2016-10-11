@@ -144,6 +144,10 @@ angular.module('jdalt.toolBox')
           el = root[0]
         }
 
+        if(!x && !y) {
+          x = y = 0
+        }
+
         var ev = document.createEvent('MouseEvent')
         ev.initMouseEvent(
           type,
