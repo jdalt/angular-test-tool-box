@@ -1,6 +1,6 @@
 describe('JsData Request', function() {
 
-  var compile, Req, dom
+  var compile, Req, dom, DS
 
   beforeEach(function () {
     module('dummy-js-data')
@@ -21,7 +21,7 @@ describe('JsData Request', function() {
     }
 
     RequestHelperProvider.setResponseTransformer(wrapResult)
-    RequestHelperProvider.setBasePath(DSHttpAdapterProvider.defaults.basePath)
+    RequestHelperProvider.setBasePath(DSHttpAdapterProvider.defaults.basePath) // necessary?
 
     FabricatorProvider
     .fab('cat', {
@@ -40,12 +40,22 @@ describe('JsData Request', function() {
       name: 'Mustapha',
       bananas: 10
     })
+    .fab('org', {
+      id: 33,
+      name: 'Sesame Street'
+    })
+    .fab('owner', {
+      id: 9,
+      name: 'Oscar',
+      org_id: 33
+    })
 
   }))
 
-  beforeEach(inject(function(DirectiveHelper, RequestHelper) {
+  beforeEach(inject(function(DirectiveHelper, RequestHelper, _DS_) {
     Req = RequestHelper
     dom = DirectiveHelper.compileFn('<div js-data-directive></div>', false)()
+    DS = _DS_
   }))
 
   describe('raw url expectations', function() {
@@ -130,6 +140,36 @@ describe('JsData Request', function() {
       Req.whenMany('monkey', { bunch: 10 })
       dom.click('#monkey-button').flush()
       expect(dom.count('ul li')).toBe(0)
+    })
+
+    describe('nested resources', function() {
+
+      it('should use nested url to request "owners"', function() {
+        Req.expectMany('owner', { org_id: 10 })
+        DS.findAll('owner', { org_id: 10 })
+        Req.flush()
+      })
+
+      it('should use nested url to request "owners" with extra params', function() {
+        Req.expectMany('owner', { org_id: 10, moarStuff: 99 })
+        DS.findAll('owner', { org_id: 10, moarStuff: 99 })
+        Req.flush()
+      })
+
+      it('should use nested url when calling loadRelations and correctly fabricate nested object', function() {
+        Req.expectOne('org', { id: 66 })
+        Req.expectMany('owner', { org_id: 66 }, [{org_id: 66}])
+
+        DS.find('org', 66).then(function(org) {
+          DS.loadRelations('org', org, ['owner']).then( function(org) {
+            expect(org.owner.id).toBe(9)
+            expect(org.owner.org_id).toBe(66)
+            expect(org.owner.name).toBe('Oscar')
+          })
+        })
+        Req.flush()
+      })
+
     })
 
     describe('expectDestroy', function() {

@@ -25,6 +25,33 @@ angular.module('dummy-js-data')
     endpoint: '/bed/monkeys'
   })
 
+  DS.defineResource({
+    name: 'org',
+    endpoint: '/biz/orgs',
+    relations: {
+      hasOne: {
+        owner: {
+          localField: 'owner',
+          foreignKey: 'org_id'
+        }
+      }
+    }
+  })
+
+  DS.defineResource({
+    name: 'owner',
+    endpoint: '/owners',
+    relations: {
+      belongsTo: {
+        org: {
+          parent: true,
+          localField: 'org',
+          localKey: 'org_id'
+        }
+      }
+    }
+  })
+
 })
 
 angular.module('dummy-js-data')
