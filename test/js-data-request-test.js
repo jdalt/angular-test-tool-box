@@ -148,6 +148,28 @@ describe('JsData Request', function() {
         expect(dom.count('ul li')).toBe(0)
       })
 
+      describe('overwriteParams', function() {
+        it('should merge over result for "expect" request', function() {
+          Req.expectMany('monkey', {}, [{}], { result: [{id: 1, newProp: 'bar'}] })
+          DS.findAll('monkey', {}).then(function(monkeys) {
+            expect(monkeys[0].id).toBe(1)
+            expect(monkeys[0].newProp).toBe('bar')
+          })
+
+          Req.flush()
+        })
+
+        it('should merge over result for "when" request', function() {
+          Req.whenMany('monkey', {}, [{}], { result: [{id: 1, newProp: 'bar'}] })
+          DS.findAll('monkey', {}).then(function(monkeys) {
+            expect(monkeys[0].id).toBe(1)
+            expect(monkeys[0].newProp).toBe('bar')
+          })
+
+          Req.flush()
+        })
+      })
+
     })
 
     describe('nested resources', function() {

@@ -99,21 +99,31 @@ angular.module('jdalt.toolBox')
       return {
         flush: $httpBackend.flush,
 
-        expectMany: function(def, params, res) {
+        expectMany: function(def, params, res, overwriteParams) {
           if(!isPath(def) && typeof res == 'undefined')  res = []
           checkArray(def, res)
           var url = getUrl('findAll', def, params)
           var resObjs = manyFabricated(def, res)
           if(!isPath(def)) resObjs = responseTransformer(resObjs)
+
+          if(overwriteParams) {
+            angular.merge(resObjs, overwriteParams)
+          }
+
           $httpBackend.expectGET(url).respond(200, resObjs)
         },
 
-        whenMany: function(def, params, res) {
+        whenMany: function(def, params, res, overwriteParams) {
           if(!isPath(def) && typeof res == 'undefined')  res = []
           checkArray(def, res)
           var url = getUrl('findAll', def, params)
           var resObjs = manyFabricated(def, res)
           if(!isPath(def)) resObjs = responseTransformer(resObjs)
+
+          if(overwriteParams) {
+            angular.merge(resObjs, overwriteParams)
+          }
+
           $httpBackend.whenGET(url).respond(200, resObjs)
         },
 
