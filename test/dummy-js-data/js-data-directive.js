@@ -28,6 +28,11 @@ angular.module('dummy-js-data')
   DS.defineResource({
     name: 'org',
     endpoint: '/biz/orgs',
+    computed: {
+      synthetic: ['name', function(name) {
+        return 'Robot ' + name
+      }],
+    },
     relations: {
       hasOne: {
         owner: {

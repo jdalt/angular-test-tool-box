@@ -382,6 +382,30 @@ angular.module('jdalt.toolBox')
         return completePath(method, path, params) // params gets mutated by getPath, parent params (for nested routes) get stripped out when they are used
       }
 
+      function omit(sourceObj, keys) {
+        var result = angular.copy(sourceObj)
+        keys.forEach(function(key) {
+          delete result[key]
+        })
+        return result
+      }
+
+      // Transforms to update/upsert resource request (in contrast to url request) form
+      function transformUpdateRequest(def, id, req, res) {
+        if(!isPath(def)) {
+          var resource = resourceDefs[def]
+          res = id
+          id = res.id
+          req = omit(res, resource.omit)
+          res = responseTransformer(req)
+        }
+        return {
+          id: id,
+          req: req,
+          res: res
+        }
+      }
+
       return {
         flush: $httpBackend.flush,
 
@@ -435,20 +459,32 @@ angular.module('jdalt.toolBox')
           $httpBackend.whenGET(url).respond(200, resObj)
         },
 
-        // TODO: test fabrication for mutational methods, use correct method name to generate url
+        // raw: function(url, req, res)
+        // resource: function(def, resp)
         expectCreate: function(def, req, res) {
+          if(!isPath(def)) {
+            req = angular.copy(req)
+            res = responseTransformer(angular.copy(req))
+            delete req.id
+          }
           var url = getUrl('findAll', def)
           $httpBackend.expectPOST(url, req).respond(200, res)
         },
 
+        // raw: function(url, id, req, res)
+        // resource: function(def, resp)
         expectUpdate: function(def, id, req, res) {
-          var url = getUrl('find', def, id)
-          $httpBackend.expectPUT(url, req).respond(200, res)
+          var desc = transformUpdateRequest(def, id, req, res)
+          var url = getUrl('find', def, desc.id)
+          $httpBackend.expectPUT(url, desc.req).respond(200, desc.res)
         },
 
+        // raw: function(url, id, req, res)
+        // resource: function(def, resp)
         expectUpsert: function(def, id, req, res) {
-          var url = getUrl('find', def, id)
-          $httpBackend.expectPATCH(url, req).respond(200, res)
+          var desc = transformUpdateRequest(def, id, req, res)
+          var url = getUrl('find', def, desc.id)
+          $httpBackend.expectPATCH(url, desc.req).respond(200, desc.res)
         },
 
         expectDestroy: function(def, id) {

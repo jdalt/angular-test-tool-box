@@ -202,9 +202,52 @@ describe('JsData Request', function() {
 
     })
 
-    xdescribe('expectCreate')
-    xdescribe('expectUpdate')
-    xdescribe('expectUpsert')
+    describe('expectCreate', function() {
+      it('should send request and return unwrapped response', function() {
+        var org = { id: 66, name: "Spacely's Sprockets" }
+        Req.expectCreate('org', org)
+
+        var orgNoId = angular.copy(org)
+        delete orgNoId.id
+
+        DS.create('org', orgNoId).then( function(orgRes) {
+          expect(orgRes.id).toBe(66)
+          expect(orgRes.name).toBe("Spacely's Sprockets")
+        })
+
+        Req.flush()
+      })
+    })
+
+    describe('expectUpdate', function() {
+      it('should send request without computed property and return unwrapped response', function() {
+        // Note: The 'org' resource has computed property named 'synthetic'
+        // that should not be sent in the request.
+        var org = DS.inject('org', { id: 66, name: "Spacely's Sprockets", owner: { id: 1, name: "Spacely" } })
+        Req.expectUpdate('org', org)
+
+        DS.update('org', 66, org).then( function(orgRes) {
+          expect(orgRes.name).toBe("Spacely's Sprockets")
+        })
+
+        Req.flush()
+      })
+    })
+
+    describe('expectUpsert', function() {
+      it('should send request without computed property and return unwrapped response', function() {
+        // Note: The 'org' resource has computed property named 'synthetic'
+        // that should not be sent in the request.
+        var org = DS.inject('org', { id: 66, name: "Spacely's Sprockets", owner: { id: 1, name: "Spacely" } })
+        Req.expectUpsert('org', org)
+
+        DS.update('org', 66, org, { method: 'PATCH' }).then( function(orgRes) {
+          expect(orgRes.name).toBe("Spacely's Sprockets")
+        })
+
+        Req.flush()
+      })
+    })
 
     describe('expectDestroy', function() {
       it('should initiate a DELETE request when cat-trap clicked', function() {
