@@ -44,6 +44,11 @@ describe('JsData Request', function() {
       id: 33,
       name: 'Sesame Street'
     })
+    .fab('stoneOrg', {
+      $parent: 'org',
+      id: 66,
+      name: 'Flintstone Quarry'
+    })
     .fab('owner', {
       id: 9,
       name: 'Oscar',
@@ -240,6 +245,15 @@ describe('JsData Request', function() {
         DS.update('org', 66, org).then( function(orgRes) {
           expect(orgRes.name).toBe("Spacely's Sprockets")
         })
+
+        Req.flush()
+      })
+
+      it('should set accurate url when a child resource fabricator is used on expectation', function() {
+        var org = DS.inject('org', { id: 5, name: 'Mutations!!' })
+        Req.expectUpdate('stoneOrg', org)
+
+        DS.update('org', 5, org)
 
         Req.flush()
       })

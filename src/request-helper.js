@@ -120,7 +120,7 @@ angular.module('jdalt.toolBox')
       // Transforms to update/upsert resource request (in contrast to url request) form
       function transformUpdateRequest(def, id, req, res) {
         if(!isPath(def)) {
-          var resource = resourceDefs[def]
+          var resource = getBaseResourceDef(def)
           res = id
           id = res.id
           req = omit(res, resource.omit)
