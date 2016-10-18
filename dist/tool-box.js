@@ -370,14 +370,27 @@ angular.module('jdalt.toolBox')
         }
       }
 
+      // Recursively climbs tree of Fabricators via $parent and then retrieves resource definition for base parent.
+      function getBaseResourceDef(def) {
+        var fab = Fabricator(def)
+        var resourceName = def
+
+        if(!fab || !resourceName) throw new Error('Unable to find path for resource ' + def)
+
+        while(fab.$parent) {
+          resourceName = fab.$parent
+          fab = Fabricator(resourceName)
+        }
+
+        return resourceDefs[resourceName]
+      }
+
       function getUrl(method, def, params) {
         if(isPath(def)) return urlFromPath(method, def, params)
         if(!DSHttpAdapter) return urlFromPath(method, def, params)
 
-        var resource = resourceDefs[def]
-        if(!resource) throw new Error('Unable to find path for resource ' + def)
-
-        var path = DSHttpAdapter.getPath(method, resource, params, { params: params })
+        var resourceBase = getBaseResourceDef(def)
+        var path = DSHttpAdapter.getPath(method, resourceBase, params, { params: params })
 
         return completePath(method, path, params) // params gets mutated by getPath, parent params (for nested routes) get stripped out when they are used
       }

@@ -91,6 +91,17 @@ describe('JsData Request', function() {
         dom.click('#catnip').flush()
       })
 
+      it('should compile with expectation of "lion" and set url for parent correctly', function() {
+        Req.expectOne('lion', { id: 1 })
+
+        DS.find('cat', 1).then( function(lion) {
+          expect(lion.name).toBe('King')
+          expect(lion.claws).toBe(true)
+        })
+
+        Req.flush()
+      })
+
       it('should request cat and display cat name of default cat fabricator in #litter-box', function() {
         Req.expectOne('cat', 1)
         dom.click('#catnip').flush()
