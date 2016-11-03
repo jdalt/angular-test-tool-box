@@ -30,7 +30,7 @@ describe('JsDataFabricator', function() {
       JsDataFabricator = _JsDataFabricator_
     }))
 
-    it('should fabrciate and inject cat', function() {
+    it('should fabricate and inject cat', function() {
       var cat = JsDataFabricator('cat', { id: 100, laserEyes: true })
 
       expect(cat.name).toBe('Snarl')
@@ -38,6 +38,17 @@ describe('JsDataFabricator', function() {
 
       var dsCat = DS.get('cat', 100)
       expect(dsCat.name).toBe('Snarl')
+      expect(dsCat.laserEyes).toBe(true)
+    })
+
+    it('should fabricate "lion" and inject it into "cat"', function() {
+      var cat = JsDataFabricator('lion', { id: 100, laserEyes: true })
+
+      expect(cat.name).toBe('King')
+      expect(cat.laserEyes).toBe(true)
+
+      var dsCat = DS.get('cat', 100)
+      expect(dsCat.name).toBe('King')
       expect(dsCat.laserEyes).toBe(true)
     })
 

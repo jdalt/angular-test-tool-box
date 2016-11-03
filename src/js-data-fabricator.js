@@ -1,7 +1,8 @@
 angular.module('jdalt.toolBox')
 .factory('JsDataFabricator', function (
   Fabricator,
-  $injector
+  $injector,
+  baseResourceFinder
 ) {
 
   // We do this to avoid requiring Js-Data in the 'jdalt.toolBox' module
@@ -10,8 +11,11 @@ angular.module('jdalt.toolBox')
   }
   var DS = $injector.get('DS')
 
-  function JsDataFabricator(resourceName, params) {
-    var fabObj = Fabricator(resourceName, params)
+  function JsDataFabricator(fabName, params) {
+    var fabObj = Fabricator(fabName, params)
+
+    var resourceName = baseResourceFinder(fabName).name
+
     return DS.inject(resourceName, fabObj)
   }
 

@@ -69,6 +69,41 @@ angular.module('jdalt.toolBox')
 })
 
 angular.module('jdalt.toolBox')
+.factory('baseResourceFinder', ["Fabricator", "$injector", function (
+  Fabricator,
+  $injector
+) {
+
+  // We do this to avoid requiring Js-Data in the 'jdalt.toolBox' module
+  function getDS() {
+    if(!$injector.has('DS')) {
+      throw new Error('baseResourceFinder requires JsData "DS" provider')
+    }
+    return $injector.get('DS')
+  }
+
+  // Recursively climbs tree of Fabricators via $parent and then retrieves resource definition for base parent.
+  function baseResourceFinder(def) {
+    var DS = getDS()
+
+    var fab = Fabricator(def)
+    var resourceName = def
+
+    if(!fab || !resourceName) throw new Error('Unable to find path for resource ' + def)
+
+    while(fab.$parent) {
+      resourceName = fab.$parent
+      fab = Fabricator(resourceName)
+    }
+
+    return DS.definitions[resourceName]
+  }
+
+  return baseResourceFinder
+
+}])
+
+angular.module('jdalt.toolBox')
 .factory('DirectiveHelper', ["$compile", "$rootScope", "$httpBackend", "DomHelper", function(
   $compile,
   $rootScope,
@@ -272,9 +307,10 @@ angular.module('jdalt.toolBox')
 })
 
 angular.module('jdalt.toolBox')
-.factory('JsDataFabricator', ["Fabricator", "$injector", function (
+.factory('JsDataFabricator', ["Fabricator", "$injector", "baseResourceFinder", function (
   Fabricator,
-  $injector
+  $injector,
+  baseResourceFinder
 ) {
 
   // We do this to avoid requiring Js-Data in the 'jdalt.toolBox' module
@@ -283,8 +319,11 @@ angular.module('jdalt.toolBox')
   }
   var DS = $injector.get('DS')
 
-  function JsDataFabricator(resourceName, params) {
-    var fabObj = Fabricator(resourceName, params)
+  function JsDataFabricator(fabName, params) {
+    var fabObj = Fabricator(fabName, params)
+
+    var resourceName = baseResourceFinder(fabName).name
+
     return DS.inject(resourceName, fabObj)
   }
 
@@ -322,11 +361,12 @@ angular.module('jdalt.toolBox')
       basePath = path
     },
 
-    $get: ["$httpBackend", "$backportedParamSerializer", "Fabricator", "$injector", function (
+    $get: ["$httpBackend", "$backportedParamSerializer", "Fabricator", "$injector", "baseResourceFinder", function (
       $httpBackend,
       $backportedParamSerializer,
       Fabricator,
-      $injector
+      $injector,
+      baseResourceFinder
     ) {
 
       var DSHttpAdapter
@@ -391,26 +431,11 @@ angular.module('jdalt.toolBox')
         }
       }
 
-      // Recursively climbs tree of Fabricators via $parent and then retrieves resource definition for base parent.
-      function getBaseResourceDef(def) {
-        var fab = Fabricator(def)
-        var resourceName = def
-
-        if(!fab || !resourceName) throw new Error('Unable to find path for resource ' + def)
-
-        while(fab.$parent) {
-          resourceName = fab.$parent
-          fab = Fabricator(resourceName)
-        }
-
-        return resourceDefs[resourceName]
-      }
-
       function getUrl(method, def, params) {
         if(isPath(def)) return urlFromPath(method, def, params)
         if(!DSHttpAdapter) return urlFromPath(method, def, params)
 
-        var resourceBase = getBaseResourceDef(def)
+        var resourceBase = baseResourceFinder(def)
         var path = DSHttpAdapter.getPath(method, resourceBase, params, { params: params })
 
         return completePath(method, path, params) // params gets mutated by getPath, parent params (for nested routes) get stripped out when they are used
@@ -427,7 +452,7 @@ angular.module('jdalt.toolBox')
       // Transforms to update/upsert resource request (in contrast to url request) form
       function transformUpdateRequest(def, id, req, res) {
         if(!isPath(def)) {
-          var resource = getBaseResourceDef(def)
+          var resource = baseResourceFinder(def)
           res = id
           id = res.id
           req = omit(res, resource.omit)

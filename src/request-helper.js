@@ -19,7 +19,8 @@ angular.module('jdalt.toolBox')
       $httpBackend,
       $backportedParamSerializer,
       Fabricator,
-      $injector
+      $injector,
+      baseResourceFinder
     ) {
 
       var DSHttpAdapter
@@ -84,26 +85,11 @@ angular.module('jdalt.toolBox')
         }
       }
 
-      // Recursively climbs tree of Fabricators via $parent and then retrieves resource definition for base parent.
-      function getBaseResourceDef(def) {
-        var fab = Fabricator(def)
-        var resourceName = def
-
-        if(!fab || !resourceName) throw new Error('Unable to find path for resource ' + def)
-
-        while(fab.$parent) {
-          resourceName = fab.$parent
-          fab = Fabricator(resourceName)
-        }
-
-        return resourceDefs[resourceName]
-      }
-
       function getUrl(method, def, params) {
         if(isPath(def)) return urlFromPath(method, def, params)
         if(!DSHttpAdapter) return urlFromPath(method, def, params)
 
-        var resourceBase = getBaseResourceDef(def)
+        var resourceBase = baseResourceFinder(def)
         var path = DSHttpAdapter.getPath(method, resourceBase, params, { params: params })
 
         return completePath(method, path, params) // params gets mutated by getPath, parent params (for nested routes) get stripped out when they are used
@@ -120,7 +106,7 @@ angular.module('jdalt.toolBox')
       // Transforms to update/upsert resource request (in contrast to url request) form
       function transformUpdateRequest(def, id, req, res) {
         if(!isPath(def)) {
-          var resource = getBaseResourceDef(def)
+          var resource = baseResourceFinder(def)
           res = id
           id = res.id
           req = omit(res, resource.omit)
