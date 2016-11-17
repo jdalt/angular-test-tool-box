@@ -34,6 +34,12 @@ angular.module('jdalt.toolBox')
         return DomHelper(clickEl)
       },
 
+      triggerEvent: function(type, eventProps) {
+        var ev = $.Event(type, eventProps)
+        root.trigger(ev)
+        return this
+      },
+
       syntheticMouseEvent: function(type, x, y, overrideEl) {
         var el
         if(overrideEl) {

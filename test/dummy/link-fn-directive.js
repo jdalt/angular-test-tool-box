@@ -17,6 +17,7 @@ angular.module('dummy')
 
       element.on('mousemove', function(event) {
         element.prepend('<span>Element Mouse Move at ' + event.clientX + ',' + event.clientY + '</span>')
+        if(event.shiftKey) element.prepend('<sel>Top Gear!</sel>')
       })
 
       // Document Events

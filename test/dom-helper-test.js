@@ -140,6 +140,18 @@ describe('DomHelper', function() {
       expect(dom.text('span')).toContain('Document Mouse Move')
       expect(dom.text('span')).toContain('100,200')
     })
+
+    describe('triggerEvent', function() {
+      it('should show Element Mouse Down on mousedown', function() {
+        dom.triggerEvent('mousedown', { shiftKey: true })
+        expect(dom.text('span')).toContain('Element Mouse Down')
+      })
+
+      it('should show "Top Gear" when shiftKey: true on mousemove', function() {
+        dom.triggerEvent('mousemove', { shiftKey: true })
+        expect(dom.text('sel')).toContain('Top Gear')
+      })
+    })
   })
 
 })
