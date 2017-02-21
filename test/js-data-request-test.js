@@ -249,6 +249,22 @@ describe('JsData Request', function() {
         Req.flush()
       })
 
+      it('should allow tester to overwrite response with 3rd parameter', function() {
+        var orgParams = { id: 66, name: "Spacely's Sprockets" }
+        var org = DS.inject('org', orgParams)
+
+        var responseParams = angular.copy(orgParams)
+        responseParams.fieldAddedByServer = 411
+        Req.expectUpdate('org', org, responseParams)
+
+        expect(org.fieldAddedByServer).toBeUndefined()
+
+        DS.update('org', 66, org)
+        Req.flush()
+
+        expect(org.fieldAddedByServer).toBe(411)
+      })
+
       it('should set accurate url when a child resource fabricator is used on expectation', function() {
         var org = DS.inject('org', { id: 5, name: 'Mutations!!' })
         Req.expectUpdate('stoneOrg', org)

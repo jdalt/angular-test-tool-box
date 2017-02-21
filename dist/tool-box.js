@@ -459,10 +459,15 @@ angular.module('jdalt.toolBox')
       function transformUpdateRequest(def, id, req, res) {
         if(!isPath(def)) {
           var resource = baseResourceFinder(def)
+          var overwriteResp = req
           res = id
           id = res.id
           req = omit(res, resource.omit)
-          res = responseTransformer(req)
+          if(overwriteResp) {
+            res = responseTransformer(overwriteResp)
+          } else {
+            res = responseTransformer(req)
+          }
         }
         return {
           id: id,
