@@ -534,8 +534,12 @@ angular.module('jdalt.toolBox')
         expectCreate: function(def, req, res) {
           if(!isPath(def)) {
             req = angular.copy(req)
-            res = responseTransformer(angular.copy(req))
-            delete req.id
+            if(res) {
+              res = responseTransformer(res)
+            } else {
+              res = responseTransformer(angular.copy(req))
+              delete req.id
+            }
           }
           var url = getUrl('findAll', def)
           $httpBackend.expectPOST(url, req).respond(200, res)

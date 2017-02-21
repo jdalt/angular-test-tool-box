@@ -233,6 +233,22 @@ describe('JsData Request', function() {
 
         Req.flush()
       })
+
+      it('should allow tester to overwrite response with 3rd parameter', function() {
+        var orgParams = { name: "Spacely's Sprockets" }
+        var createResp = angular.copy(orgParams)
+        createResp.id = 44
+        createResp.fieldAddedByServer = 411
+        Req.expectCreate('org', orgParams, createResp)
+
+        DS.create('org', orgParams)
+        Req.flush()
+
+        var org = DS.get('org', 44)
+
+        expect(org.name).toBe("Spacely's Sprockets")
+        expect(org.fieldAddedByServer).toBe(411)
+      })
     })
 
     describe('expectUpdate', function() {
