@@ -4,6 +4,12 @@ angular.module('jdalt.toolBox')
 ) {
 
   function DomHelper(root) {
+
+    function normalizeText(str) {
+      if (typeof str !== 'string') throw new Error('normalizeWhitespace called with a non-string argument: ' + typeof str)
+      return str.replace(/\s+/g, ' ').trim()
+    }
+
     return {
       $el: root, // jQuery wrapped element
 
