@@ -11,6 +11,8 @@ angular.module('dummy')
               '    <button id="simp-button" ng-click="ctrl.doSomething()">Do A Thing</button>' +
               '    <p ng-if="ctrl.clickHappened">Something Happened!</p>' +
               '  </div>' +
+              '  <div class="texty">    Text with  spaces  \n  in weird \t places  </div>' +
+              '  <div class="texty">   moar weird \t\t\t stuff </div>' +
               '</div>',
     controllerAs: 'ctrl',
     controller: function() {

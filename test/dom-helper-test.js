@@ -7,8 +7,22 @@ describe('DomHelper', function() {
       dom = DirectiveHelper.compileFn('<div simple-directive></div>', false)()
     }))
 
-    it('should find text() of "Simple Directive H1"', function() {
-      expect(dom.text('h1')).toBe('Simple Directive H1')
+    describe('text retrieval', function() {
+      it('should find text() of "Simple Directive H1"', function() {
+        expect(dom.text('h1')).toBe('Simple Directive H1')
+      })
+
+      it('should report normalized text of .texty', function() {
+        expect(dom.text('.texty', 0)).toBe('Text with spaces in weird places')
+      })
+
+      it('should report raw (not normalized) text of .texty when { normalize: false } passed in', function() {
+        expect(dom.text('.texty', 0, { normalize: false })).toBe('    Text with  spaces  \n  in weird \t places  ')
+      })
+
+      it('should find text() of #texty and use raw textnormalize whitespace', function() {
+        expect(dom.text('.texty', 1, { normalize: false })).toBe('   moar weird \t\t\t stuff ')
+      })
     })
 
     it('should chainably proxy "find()" and directly proxy "text()" on $el', function() {
