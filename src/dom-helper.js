@@ -4,6 +4,12 @@ angular.module('jdalt.toolBox')
 ) {
 
   function DomHelper(root) {
+
+    function normalizeText(str) {
+      if (typeof str !== 'string') throw new Error('normalizeWhitespace called with a non-string argument: ' + typeof str)
+      return str.replace(/\s+/g, ' ').trim()
+    }
+
     return {
       $el: root, // jQuery wrapped element
 
@@ -109,12 +115,20 @@ angular.module('jdalt.toolBox')
         return DomHelper(el)
       },
 
-      text: function(selector, nth) {
+      text: function(selector, nth, options) {
         var el = root
         if(selector) el = root.find(selector)
-        if(nth != null) el = el.eq(nth)
-        return el.text()
-      }
+        if(!options && nth && !angular.isNumber(nth)) options = nth
+        if(nth != null && angular.isNumber(nth)) el = el.eq(nth)
+
+        if(options && options.normalize === false) {
+          return el.text()
+        } else {
+          return normalizeText(el.text())
+        }
+      },
+
+      normalizeText: normalizeText
 
     }
 
