@@ -124,8 +124,24 @@ angular.module('jdalt.toolBox')
         }
       }
 
+      function getDefinition(type, method, url /*, data */) {
+        if (!definitions[type][method][url]) { // TODO: serialize data when/if this is expanded to other methods
+          definitions[type][method][url] = $httpBackend[type](method, url /*, data */)
+        }
+        return definitions[type][method][url]
+      }
+
+      // TODO: expand this out into `expect` and other methods, when/if it's useful
+      var definitions = {
+        when: {
+          GET: {}
+        }
+      }
+
       return {
         flush: $httpBackend.flush,
+
+        definitions: definitions,
 
         expectMany: function(def, params, res, overwriteParams) {
           if(!isPath(def) && typeof res == 'undefined')  res = []
@@ -138,7 +154,7 @@ angular.module('jdalt.toolBox')
             angular.merge(resObjs, overwriteParams)
           }
 
-          $httpBackend.expectGET(url).respond(200, resObjs)
+          return $httpBackend.expectGET(url).respond(200, resObjs)
         },
 
         whenMany: function(def, params, res, overwriteParams) {
@@ -152,7 +168,7 @@ angular.module('jdalt.toolBox')
             angular.merge(resObjs, overwriteParams)
           }
 
-          $httpBackend.whenGET(url).respond(200, resObjs)
+          return getDefinition('when', 'GET', url).respond(200, resObjs)
         },
 
         expectOne: function(def, id, res) {
@@ -163,7 +179,7 @@ angular.module('jdalt.toolBox')
           if(!isPath(def)) resObj = responseTransformer(resObj)
 
           var url = getUrl('find', def, id)
-          $httpBackend.expectGET(url).respond(200, resObj)
+          return $httpBackend.expectGET(url).respond(200, resObj)
         },
 
         whenOne: function(def, id, res) {
@@ -174,7 +190,7 @@ angular.module('jdalt.toolBox')
           if(!isPath(def)) resObj = responseTransformer(resObj)
 
           var url = getUrl('find', def, id)
-          $httpBackend.whenGET(url).respond(200, resObj)
+          return getDefinition('when', 'GET', url).respond(200, resObj)
         },
 
         // raw: function(url, req, res)
@@ -190,7 +206,7 @@ angular.module('jdalt.toolBox')
             }
           }
           var url = getUrl('findAll', def)
-          $httpBackend.expectPOST(url, req).respond(200, res)
+          return $httpBackend.expectPOST(url, req).respond(200, res)
         },
 
         // raw: function(url, id, req, res)
@@ -198,7 +214,7 @@ angular.module('jdalt.toolBox')
         expectUpdate: function(def, id, req, res) {
           var desc = transformUpdateRequest(def, id, req, res)
           var url = getUrl('find', def, desc.id)
-          $httpBackend.expectPUT(url, desc.req).respond(200, desc.res)
+          return $httpBackend.expectPUT(url, desc.req).respond(200, desc.res)
         },
 
         // raw: function(url, id, req, res)
@@ -206,12 +222,12 @@ angular.module('jdalt.toolBox')
         expectUpsert: function(def, id, req, res) {
           var desc = transformUpdateRequest(def, id, req, res)
           var url = getUrl('find', def, desc.id)
-          $httpBackend.expectPATCH(url, desc.req).respond(200, desc.res)
+          return $httpBackend.expectPATCH(url, desc.req).respond(200, desc.res)
         },
 
         expectDestroy: function(def, id) {
           var url = getUrl('find', def, id)
-          $httpBackend.expectDELETE(url).respond(204, '')
+          return $httpBackend.expectDELETE(url).respond(204, '')
         },
       }
     }
