@@ -228,7 +228,7 @@ angular.module('jdalt.toolBox')
       },
 
       val: function(value) {
-        if(value) root.val(value).trigger('change')
+        if(arguments.length > 0) root.val(value).trigger('change')
         return root.val()
       },
 
