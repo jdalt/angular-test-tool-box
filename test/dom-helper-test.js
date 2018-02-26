@@ -114,6 +114,12 @@ describe('DomHelper', function() {
       expect(dom.find('#deep-thought-inp').val()).toBe('42')
     })
 
+    it('should return set val() when a falsy arg is sent', function() {
+      expect(dom.find('#deep-thought-inp').val()).toBe('42')
+      dom.find('#deep-thought-inp').val('')
+      expect(dom.find('#deep-thought-inp').val()).toBe('')
+    })
+
     it('should get cssClasses() and return hasClass() true for #french-yeoman', function() {
       expect(dom.find('#french-yeoman').cssClasses()).toBe('huguenot proletariat')
       expect(dom.find('#french-yeoman').hasClass('proletariat')).toBeTruthy()
