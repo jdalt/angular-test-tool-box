@@ -4,7 +4,7 @@ describe('DirectiveHelper', function() {
 
   describe('for closed directives', function() {
     beforeEach(inject(function(DirectiveHelper) {
-      compile = DirectiveHelper.compileFn('<div simple-directive></div>', false)
+      compile = DirectiveHelper.compileFn('<div simple-directive></div>')
     }))
 
     it('should compile a simple directive', function() {
