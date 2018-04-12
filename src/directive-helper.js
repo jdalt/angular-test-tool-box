@@ -6,18 +6,24 @@ angular.module('jdalt.toolBox')
   DomHelper
 ) {
 
-  function compileFn(tmpl, flushRequests) {
+  function compileFn(tmpl, options) {
 
-    return function compile(scopeParams) {
+    options = (typeof options == 'boolean') ? { flushRequests: options } : options || {}
+
+    return function compile(scopeParams, overrideOptions) {
       scopeParams = scopeParams || {}
       var scope = $rootScope.$new()
 
       angular.extend(scope, scopeParams)
+      var callOptions = angular.extend({}, options, overrideOptions)
 
-      var el = $compile(tmpl)(scope)
+      var cloneAttachFn
+      if (callOptions.attach) cloneAttachFn = function(clone) { clone.appendTo('body') }
+
+      var el = $compile(tmpl)(scope, cloneAttachFn)
       scope.$digest()
 
-      if(flushRequests || flushRequests === undefined) $httpBackend.flush()
+      if (callOptions.flushRequests || callOptions.flushRequests === undefined) $httpBackend.flush()
 
       return angular.extend({ scope: scope }, DomHelper(el))
     }

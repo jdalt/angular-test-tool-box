@@ -16,6 +16,11 @@ describe('DirectiveHelper', function() {
       expect(dom.$el.find('h1').text()).toEqual('Simple Directive H1')
       expect(dom.$el.find('#simp-button').text()).toEqual('Do A Thing')
     })
+
+    it('should attach the element into the DOM if `attach` specified in options', function() {
+      dom = compile(null, { attach: true })
+      expect(angular.element('#simp-main').length).toEqual(1) // angular.element searches from the body
+    })
   })
 
   describe('for directives that accept scope parameters', function() {
