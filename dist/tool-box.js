@@ -128,7 +128,7 @@ angular.module('jdalt.toolBox')
       var el = $compile(tmpl)(scope, cloneAttachFn)
       scope.$digest()
 
-      if (callOptions.flushRequests || callOptions.flushRequests === undefined) $httpBackend.flush()
+      if (callOptions.flushRequests) $httpBackend.flush()
 
       return angular.extend({ scope: scope }, DomHelper(el))
     }
