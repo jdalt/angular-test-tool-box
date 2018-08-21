@@ -21,6 +21,23 @@ describe('DirectiveHelper', function() {
       dom = compile(null, { attach: true })
       expect(angular.element('#simp-main').length).toEqual(1) // angular.element searches from the body
     })
+
+    it('should allow overwriting the template on the compile function', function() {
+      compile.template = '<div simple-directive test-attr="1">'
+      dom = compile()
+      expect(dom.$el.attr('test-attr')).toBe('1')
+    })
+
+    it('should allow overwriting the template on the compile options', function() {
+      dom = compile(null, { template: '<div simple-directive test-attr="2">' })
+      expect(dom.$el.attr('test-attr')).toBe('2')
+    })
+
+    it('should set scope, innerScope, and ctrl on dom', function() {
+      dom = compile()
+      expect(dom.innerScope).toBe(dom.$el.isolateScope())
+      expect(dom.ctrl).toBe(dom.$el.isolateScope().ctrl)
+    })
   })
 
   describe('for directives that accept scope parameters', function() {
