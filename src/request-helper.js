@@ -66,7 +66,7 @@ angular.module('jdalt.toolBox')
       }
 
       function isPath(def) {
-        return def[0] == '/'
+        return /^(https?:)?\//i.test(def)
       }
 
       function urlFromPath(method, path, params) {
