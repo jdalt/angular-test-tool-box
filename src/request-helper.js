@@ -23,10 +23,10 @@ angular.module('jdalt.toolBox')
       baseResourceFinder
     ) {
 
-      var DSHttpAdapter
+      var DS, DSHttpAdapter
       var resourceDefs = {}
-      if($injector.has('DS') && $injector.has('DS')) {
-        var DS = $injector.get('DS')
+      if($injector.has('DS') && $injector.get('DS')) {
+        DS = $injector.get('DS')
         DSHttpAdapter = $injector.get('DSHttpAdapter')
         resourceDefs = DS.definitions
       }
@@ -92,7 +92,10 @@ angular.module('jdalt.toolBox')
         var resourceBase = baseResourceFinder(def)
         var path = DSHttpAdapter.getPath(method, resourceBase, params, { params: params })
 
-        return completePath(method, path, params) // params gets mutated by getPath, parent params (for nested routes) get stripped out when they are used
+        path = completePath(method, path, params) // params gets mutated by getPath, parent params (for nested routes) get stripped out when they are used
+        var suffix = resourceBase.suffix
+        if (suffix && !~path.indexOf(suffix)) path = path.replace(/(\?.*)?$/, suffix + '$1') // this is done in each js-data-http method, yuck
+        return path
       }
 
       function omit(sourceObj, keys) {
