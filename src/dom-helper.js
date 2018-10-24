@@ -5,9 +5,34 @@ angular.module('jdalt.toolBox')
 
   function DomHelper(root) {
 
+    var booleanInputs = 'input[type=checkbox], input[type=radio], option'
+
     function normalizeText(str) {
       if (typeof str !== 'string') throw new Error('normalizeWhitespace called with a non-string argument: ' + typeof str)
       return str.replace(/\s+/g, ' ').trim()
+    }
+
+    function getVal(input) {
+      input = input.first()
+      return input.is(booleanInputs) ? input.prop(input.is('option') ? 'selected' : 'checked') : input.val()
+    }
+    function setVal(input, value) {
+      // input.focus() // triggers directive binding
+      input.filter(booleanInputs).each(setBooleanInput)
+      input.not(booleanInputs).val(value).triggerHandler('change')//.triggerHandler('blur')
+
+      function setBooleanInput() {
+        var $input = angular.element(this)
+        var isOption = input.is('option')
+        var prop = isOption ? 'selected' : 'checked'
+        var $changer = isOption ? $input.parents('select') : $input
+
+        var triggerChange = !!value !== $input.prop(prop)
+        $input.prop(prop, !!value)                    // Force attribute state for $setViewValue
+        if (!isOption) $input.triggerHandler('click') // Trigger click handler (will call $setViewValue)
+        if (triggerChange) $changer.triggerHandler('change')
+        // if (scope) scope.$digest() // just in case something is $watching
+      }
     }
 
     return {
@@ -86,13 +111,13 @@ angular.module('jdalt.toolBox')
           throw new Error('Element "'+ selector +'" not found to setInputValue')
         }
 
-        inputEl.val(inputVal).trigger('change')
+        setVal(inputEl, inputVal)
         return DomHelper(inputEl)
       },
 
       val: function(value) {
-        if(arguments.length > 0) root.val(value).trigger('change')
-        return root.val()
+        if(arguments.length > 0) setVal(root, value)
+        return getVal(root)
       },
 
       cssClasses: function() {

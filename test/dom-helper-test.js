@@ -102,6 +102,37 @@ describe('DomHelper', function() {
       expect(dom.text('#deep-thought-val')).toBe('Fun Fun Fun')
     })
 
+    it('should setInputValue on checkbox input', function() {
+      expect(dom.text('#check-val')).toBe('')
+      dom.setInputValue('#check-el', true)
+      expect(dom.text('#check-val')).toBe('true')
+      expect(dom.find('#check-el').val()).toBe(true)
+      dom.setInputValue('#check-el', null)
+      expect(dom.text('#check-val')).toBe('false')
+      expect(dom.find('#check-el').val()).toBe(false)
+    })
+
+    it('should setInputValue on select', function() {
+      expect(dom.text('#sel-val')).toBe('')
+      dom.setInputValue('#sel-el', 'string:rock')
+      expect(dom.text('#sel-val')).toBe('rock')
+      dom.setInputValue('#sel-el', 'string:glam')
+      expect(dom.text('#sel-val')).toBe('glam')
+    })
+
+    it('should setInputValue on option', function() {
+      expect(dom.text('#sel-val')).toBe('')
+      dom.setInputValue('#sel-el option:eq(1)', true)
+      expect(dom.text('#sel-val')).toBe('prog')
+      expect(dom.find('#sel-el option:eq(1)').val()).toBe(true)
+      dom.setInputValue('#sel-el option:eq(2)', true)
+      expect(dom.text('#sel-val')).toBe('rock')
+      expect(dom.find('#sel-el option:eq(2)').val()).toBe(true)
+      dom.setInputValue('#sel-el option:eq(2)', false)
+      expect(dom.text('#sel-val')).toBe('')
+      expect(dom.find('#sel-el option:eq(2)').val()).toBe(false)
+    })
+
     it('should set input val() on input#deep-thought-inp', function() {
       expect(dom.text('#deep-thought-val')).toBe('42')
       var ret = dom.find('#deep-thought-inp').val('Fun Fun Fun')

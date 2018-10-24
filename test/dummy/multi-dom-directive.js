@@ -15,7 +15,11 @@ angular.module('dummy')
               '    <li>Thing 3</li>\n' +
               '  </ul>\n' +
               '  <input id="deep-thought-inp" type="text" ng-model="ctrl.allThought" />\n' +
+              '  <input id="check-el" type="checkbox" ng-model="ctrl.checkVal" />\n' +
+              '  <select id="sel-el" ng-model="ctrl.selVal" ng-options="val as key for (key, val) in ctrl.opts"><option value=""></option></select>\n' +
               '  <div id="deep-thought-val">{{ ctrl.allThought }}</div>\n' +
+              '  <div id="check-val">{{ ctrl.checkVal }}</div>\n' +
+              '  <div id="sel-val">{{ ctrl.selVal }}</div>\n' +
               '  <div id="french-yeoman" class="huguenot proletariat"></div>\n' +
               '</div>\n',
     controllerAs: 'ctrl',
@@ -23,6 +27,11 @@ angular.module('dummy')
 
       var vm = this
       vm.allThought = '42'
+      vm.opts = {
+        Rush: 'prog',
+        Queen: 'rock',
+        Kiss: 'glam'
+      }
 
     }
   }
