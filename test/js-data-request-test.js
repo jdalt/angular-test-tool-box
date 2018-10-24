@@ -76,7 +76,7 @@ describe('JsData Request', function() {
     })
 
     it('should request monkey and display monkey names <li>', function() {
-      Req.expectMany('/api/bed/monkeys', { bunch: 10 }, { result: [{ id: 1, name: 'Monkey 1' }, { id: 2, name: 'Monkey 2'}] })
+      Req.expectMany('/api/bed/monkeys.json', { bunch: 10 }, { result: [{ id: 1, name: 'Monkey 1' }, { id: 2, name: 'Monkey 2'}] })
       dom.click('#monkey-button').flush()
 
       expect(dom.text('ul li')).toContain('Monkey 1')

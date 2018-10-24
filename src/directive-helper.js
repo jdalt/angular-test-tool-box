@@ -10,7 +10,7 @@ angular.module('jdalt.toolBox')
 
     options = (typeof options == 'boolean') ? { flushRequests: options } : options || {}
 
-    return function compile(scopeParams, overrideOptions) {
+    return angular.extend(function compile(scopeParams, overrideOptions) {
       scopeParams = scopeParams || {}
       var scope = $rootScope.$new()
 
@@ -20,13 +20,20 @@ angular.module('jdalt.toolBox')
       var cloneAttachFn
       if (callOptions.attach) cloneAttachFn = function(clone) { clone.appendTo('body') }
 
-      var el = $compile(tmpl)(scope, cloneAttachFn)
+      var el = $compile(callOptions.template || compile.template)(scope, cloneAttachFn)
       scope.$digest()
 
       if (callOptions.flushRequests) $httpBackend.flush()
+      var innerScope = el.isolateScope()
 
-      return angular.extend({ scope: scope }, DomHelper(el))
-    }
+      return angular.extend({
+        scope: scope,
+        innerScope: innerScope,
+        ctrl: innerScope && (innerScope.$ctrl || innerScope.ctrl)
+      }, DomHelper(el))
+    }, {
+      template: tmpl
+    })
 
   }
 

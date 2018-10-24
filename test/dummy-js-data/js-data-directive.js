@@ -22,7 +22,8 @@ angular.module('dummy-js-data')
 
   DS.defineResource({
     name: 'monkey',
-    endpoint: '/bed/monkeys'
+    endpoint: '/bed/monkeys',
+    suffix: '.json'
   })
 
   DS.defineResource({
